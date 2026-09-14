@@ -1571,6 +1571,7 @@ function setupRefreshButton() {
 // ============================================================
 
 let truckSimulationRunning = false;
+let truckSimulationVisible = true;
 
 const truckSimulation = {
     truckId: null,
@@ -1826,6 +1827,32 @@ function ensureTruckSimulationUI() {
             cursor: pointer;
         }
 
+        .show-truck-simulation {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 10000;
+            border: 1px solid rgba(103,185,149,.35);
+            border-radius: 12px;
+            padding: 12px 17px;
+            background: rgba(18,33,27,.97);
+            color: #67b995;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 15px 45px rgba(0,0,0,.4);
+            backdrop-filter: blur(12px);
+            transition: .2s ease;
+        }
+
+        .show-truck-simulation:hover {
+            transform: translateY(-2px);
+            background: rgba(32,55,45,.98);
+        }
+
+        .show-truck-simulation.hidden {
+            display: none;
+        }
+
         @media(max-width:700px) {
             #truckSimulationPanel {
                 inset: 10px;
@@ -1983,25 +2010,81 @@ function ensureTruckSimulationUI() {
 
     document.body.appendChild(panel);
 
-    $("truckSimClose").addEventListener(
+    const showButton =
+    document.createElement("button");
+
+    showButton.id =
+      "showTruckSimulation";
+
+    showButton.className =
+       "show-truck-simulation hidden";
+
+    showButton.textContent =
+        "🚛 Show Simulation";
+
+    document.body.appendChild(
+      showButton
+    );
+
+    showButton.addEventListener(
         "click",
         () => {
-            if (!truckSimulationRunning) {
-                panel.classList.add("hidden");
-            }
+
+        truckSimulationVisible = true;
+
+        panel.classList.remove("hidden");
+
+        showButton.classList.add("hidden");
+
+        updateTruckSimulationPanel();
+        }
+    );
+
+    $("truckSimClose").addEventListener(
+    "click",
+        () => {
+
+        truckSimulationVisible = false;
+
+        panel.classList.add("hidden");
+
+        const showButton =
+            $("showTruckSimulation");
+
+        if (showButton) {
+            showButton.classList.remove("hidden");
+        }
+
+        showToast(
+            truckSimulationRunning
+                ? "Simulation minimized. Truck continues working in the backend."
+                : "Simulation closed."
+        );
         }
     );
 
     $("truckSimStopButton").addEventListener(
-        "click",
+    "click",
         () => {
-            if (!truckSimulationRunning) {
-                panel.classList.add("hidden");
-            }
+
+        truckSimulationVisible = false;
+
+        panel.classList.add("hidden");
+
+        const showButton =
+            $("showTruckSimulation");
+
+        if (showButton) {
+            showButton.classList.remove("hidden");
+        }
+
+        showToast(
+            truckSimulationRunning
+                ? "Simulation minimized. Truck continues working in the backend."
+                : "Simulation closed."
+        );
         }
     );
-}
-
 
 
 
@@ -2408,7 +2491,9 @@ function updateTruckSimulationPanel() {
         return;
     }
 
+    if (truckSimulationVisible) {
     panel.classList.remove("hidden");
+    }
 
     if ($("truckSimTruck")) {
         $("truckSimTruck").textContent =
@@ -2642,6 +2727,22 @@ async function runTruckSimulation() {
     }
 
     ensureTruckSimulationUI();
+
+    truckSimulationVisible = true;
+
+    const simulationPanel =
+        $("truckSimulationPanel");
+
+    const showSimulationButton =
+        $("showTruckSimulation");
+
+    if (simulationPanel) {
+        simulationPanel.classList.remove("hidden");
+    }
+
+    if (showSimulationButton) {
+        showSimulationButton.classList.add("hidden");
+    }
 
     truckSimulationRunning = true;
 
