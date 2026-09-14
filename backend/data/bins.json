@@ -1,0 +1,290 @@
+[
+  {
+    "id": "B-104-D",
+    "loc": "Park Street & AJC Bose Rd",
+    "type": "degradable",
+    "level": 73.58,
+    "rateHr": 6.8,
+    "x": 223,
+    "y": 150,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:52:49.279957+00:00"
+  },
+  {
+    "id": "B-104-N",
+    "loc": "Park Street & AJC Bose Rd",
+    "type": "non-degradable",
+    "level": 62.4,
+    "rateHr": 2.5,
+    "x": 237,
+    "y": 150,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:49:58.179794+00:00"
+  },
+  {
+    "id": "B-217-D",
+    "loc": "Salt Lake, Sector V",
+    "type": "degradable",
+    "level": 92.75,
+    "rateHr": 4.2,
+    "x": 358,
+    "y": 95,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:50:32.578953+00:00"
+  },
+  {
+    "id": "B-217-N",
+    "loc": "Salt Lake, Sector V",
+    "type": "non-degradable",
+    "level": 11.25,
+    "rateHr": 3.0,
+    "x": 372,
+    "y": 95,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:54:13.179250+00:00"
+  },
+  {
+    "id": "B-032-D",
+    "loc": "Gariahat Market",
+    "type": "degradable",
+    "level": 60.0,
+    "rateHr": 6.0,
+    "x": 248,
+    "y": 245,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:52:58.179138+00:00"
+  },
+  {
+    "id": "B-032-N",
+    "loc": "Gariahat Market",
+    "type": "non-degradable",
+    "level": 9.96,
+    "rateHr": 2.0,
+    "x": 262,
+    "y": 245,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:53:59.829850+00:00"
+  },
+  {
+    "id": "B-058-D",
+    "loc": "Esplanade Bus Terminus",
+    "type": "degradable",
+    "level": 50.62,
+    "rateHr": 4.5,
+    "x": 163,
+    "y": 120,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:52:44.829111+00:00"
+  },
+  {
+    "id": "B-058-N",
+    "loc": "Esplanade Bus Terminus",
+    "type": "non-degradable",
+    "level": 6.7,
+    "rateHr": 1.6,
+    "x": 177,
+    "y": 120,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:54:08.729835+00:00"
+  },
+  {
+    "id": "B-091-D",
+    "loc": "New Town, Eco Park Gate",
+    "type": "degradable",
+    "level": 58.73,
+    "rateHr": 1.5,
+    "x": 393,
+    "y": 60,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:43:52.471452+00:00"
+  },
+  {
+    "id": "B-091-N",
+    "loc": "New Town, Eco Park Gate",
+    "type": "non-degradable",
+    "level": 58.29,
+    "rateHr": 0.7,
+    "x": 407,
+    "y": 60,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:34:57.441247+00:00"
+  },
+  {
+    "id": "B-140-D",
+    "loc": "Howrah Station East",
+    "type": "degradable",
+    "level": 50.38,
+    "rateHr": 5.5,
+    "x": 63,
+    "y": 170,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:53:07.061273+00:00"
+  },
+  {
+    "id": "B-140-N",
+    "loc": "Howrah Station East",
+    "type": "non-degradable",
+    "level": 15.62,
+    "rateHr": 3.4,
+    "x": 77,
+    "y": 170,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:54:04.279991+00:00"
+  },
+  {
+    "id": "B-063-D",
+    "loc": "Rashbehari Avenue",
+    "type": "degradable",
+    "level": 26.91,
+    "rateHr": 2.8,
+    "x": 213,
+    "y": 280,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:53:02.628290+00:00"
+  },
+  {
+    "id": "B-063-N",
+    "loc": "Rashbehari Avenue",
+    "type": "non-degradable",
+    "level": 4.32,
+    "rateHr": 1.3,
+    "x": 227,
+    "y": 280,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:54:17.629193+00:00"
+  },
+  {
+    "id": "B-205-D",
+    "loc": "Ballygunge Phari",
+    "type": "degradable",
+    "level": 61.5,
+    "rateHr": 5.9,
+    "x": 283,
+    "y": 210,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:52:53.729605+00:00"
+  },
+  {
+    "id": "B-205-N",
+    "loc": "Ballygunge Phari",
+    "type": "non-degradable",
+    "level": 68.62,
+    "rateHr": 2.7,
+    "x": 297,
+    "y": 210,
+    "trend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastCollected": "2026-09-11T17:49:53.730390+00:00"
+  }
+]

@@ -1,0 +1,39 @@
+[
+  {
+    "id": "GRN-01",
+    "name": "Green Truck 01",
+    "type": "degradable",
+    "status": "available",
+    "current_bin": null,
+    "current_location": "Collection Depot",
+    "route": [],
+    "completed": [
+      "B-058-D",
+      "B-104-D",
+      "B-205-D",
+      "B-032-D",
+      "B-063-D",
+      "B-140-D"
+    ],
+    "load": 463.7,
+    "last_action": "2026-09-11T17:53:14.195056+00:00"
+  },
+  {
+    "id": "BLU-02",
+    "name": "Blue Truck 02",
+    "type": "non-degradable",
+    "status": "available",
+    "current_bin": null,
+    "current_location": "Collection Depot",
+    "route": [],
+    "completed": [
+      "B-032-N",
+      "B-140-N",
+      "B-058-N",
+      "B-217-N",
+      "B-063-N"
+    ],
+    "load": 375.9,
+    "last_action": "2026-09-11T17:54:24.762157+00:00"
+  }
+]

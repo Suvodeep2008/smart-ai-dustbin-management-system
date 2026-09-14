@@ -1,0 +1,3252 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Smart Waste AI | Control Center
+    </title>
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="icon" type="image/png" href="dustbin-favicon.png">
+
+
+    <!-- =====================================================
+         COMPLETE DASHBOARD CSS
+    ====================================================== -->
+
+    <style>
+
+        /* ==================================================
+           VARIABLES
+        ================================================== */
+
+        :root {
+
+            --bg:
+                #0b1511;
+
+            --surface:
+                #12211b;
+
+            --surface-2:
+                #182b23;
+
+            --surface-3:
+                #20372d;
+
+            --border:
+                rgba(255,255,255,0.08);
+
+            --border-strong:
+                rgba(255,255,255,0.16);
+
+            --text:
+                #edf5f0;
+
+            --muted:
+                #9caf a5;
+
+            --faint:
+                #667b71;
+
+            --green:
+                #67b995;
+
+            --green-dark:
+                #3f7e65;
+
+            --green-soft:
+                rgba(103,185,149,0.13);
+
+            --amber:
+                #e1ad45;
+
+            --amber-soft:
+                rgba(225,173,69,0.13);
+
+            --red:
+                #df6b55;
+
+            --red-soft:
+                rgba(223,107,85,0.13);
+
+            --blue:
+                #63afd4;
+
+            --blue-soft:
+                rgba(99,175,212,0.13);
+
+            --radius:
+                12px;
+
+            --small-radius:
+                8px;
+        }
+
+
+        /* ==================================================
+           RESET
+        ================================================== */
+
+        * {
+
+            box-sizing:
+                border-box;
+
+            margin:
+                0;
+
+            padding:
+                0;
+        }
+
+
+        html {
+
+            scroll-behavior:
+                smooth;
+        }
+
+
+        body {
+
+            min-height:
+                100vh;
+
+            background:
+
+                radial-gradient(
+                    circle at 85% -10%,
+                    rgba(103,185,149,0.13),
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    circle at 0% 40%,
+                    rgba(99,175,212,0.05),
+                    transparent 30%
+                ),
+
+                var(--bg);
+
+            color:
+                var(--text);
+
+            font-family:
+                "IBM Plex Sans",
+                sans-serif;
+
+            line-height:
+                1.5;
+        }
+
+
+        button {
+
+            font-family:
+                inherit;
+        }
+
+
+        /* ==================================================
+           HEADER
+        ================================================== */
+
+        header {
+
+            min-height:
+                78px;
+
+            padding:
+                16px
+                clamp(18px,4vw,55px);
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                20px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        .brand {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                13px;
+        }
+
+
+        .brand-mark {
+
+            width:
+                43px;
+
+            height:
+                43px;
+
+            border-radius:
+                11px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    var(--green),
+                    var(--green-dark)
+                );
+
+            box-shadow:
+                0 10px 30px
+                rgba(103,185,149,0.15);
+        }
+
+
+        .brand-mark span {
+
+            font-size:
+                22px;
+        }
+
+
+        .brand-title {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                18px;
+
+            font-weight:
+                700;
+        }
+
+
+        .brand-sub {
+
+            color:
+                var(--muted);
+
+            font-size:
+                11px;
+
+            margin-top:
+                2px;
+        }
+
+
+        .header-right {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        .live-status {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            padding:
+                8px 11px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                8px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                11px;
+        }
+
+
+        .live-dot {
+
+            width:
+                7px;
+
+            height:
+                7px;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--green);
+
+            box-shadow:
+                0 0 12px
+                var(--green);
+
+            animation:
+                pulse 2s infinite;
+        }
+
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+
+                opacity:
+                    1;
+            }
+
+            50% {
+
+                opacity:
+                    0.35;
+            }
+        }
+
+
+        #clock {
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            color:
+                var(--text);
+        }
+
+
+        .header-button {
+
+            border:
+                1px solid
+                var(--border-strong);
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
+
+            border-radius:
+                8px;
+
+            padding:
+                8px 13px;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .header-button:hover {
+
+            background:
+                var(--surface-3);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .header-button.primary {
+
+            color:
+                var(--green);
+
+            background:
+                var(--green-soft);
+
+            border-color:
+                rgba(103,185,149,0.3);
+        }
+
+
+        /* ==================================================
+           MAIN
+        ================================================== */
+
+        main {
+
+            width:
+                min(
+                    1500px,
+                    calc(100% - 36px)
+                );
+
+            margin:
+                auto;
+
+            padding:
+                32px 0 60px;
+        }
+
+
+        /* ==================================================
+           HERO
+        ================================================== */
+
+        .hero {
+
+            margin-bottom:
+                25px;
+        }
+
+
+        .eyebrow {
+
+            color:
+                var(--green);
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                10px;
+
+            letter-spacing:
+                0.13em;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        h1 {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                clamp(
+                    29px,
+                    4vw,
+                    43px
+                );
+
+            line-height:
+                1.05;
+
+            letter-spacing:
+                -0.04em;
+        }
+
+
+        .hero-description {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+            max-width:
+                700px;
+
+            margin-top:
+                10px;
+        }
+
+
+        /* ==================================================
+           STATISTICS
+        ================================================== */
+
+        .stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap:
+                14px;
+
+            margin-bottom:
+                22px;
+        }
+
+
+        .stat {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            background:
+                var(--surface);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                var(--radius);
+
+            padding:
+                20px;
+        }
+
+
+        .stat::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                90px;
+
+            height:
+                90px;
+
+            right:
+                -30px;
+
+            bottom:
+                -40px;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--green-soft);
+        }
+
+
+        .stat-label {
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.08em;
+        }
+
+
+        .stat-value {
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                31px;
+
+            font-weight:
+                600;
+
+            margin-top:
+                7px;
+        }
+
+
+        .stat-note {
+
+            color:
+                var(--faint);
+
+            font-size:
+                10px;
+
+            margin-top:
+                3px;
+        }
+
+
+        .stat-critical .stat-value {
+
+            color:
+                var(--red);
+        }
+
+
+        .stat-risk .stat-value {
+
+            color:
+                var(--amber);
+        }
+
+
+        /* ==================================================
+           MAIN DASHBOARD GRID
+        ================================================== */
+
+        .dashboard-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                minmax(0,1.45fr)
+                minmax(340px,0.75fr);
+
+            gap:
+                20px;
+
+            align-items:
+                start;
+        }
+
+
+        .panel {
+
+            background:
+                rgba(18,33,27,0.94);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                var(--radius);
+
+            overflow:
+                hidden;
+
+            box-shadow:
+                0 18px 50px
+                rgba(0,0,0,0.12);
+        }
+
+
+        .panel-header {
+
+            padding:
+                18px 20px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        .panel-title {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                16px;
+
+            font-weight:
+                600;
+        }
+
+
+        .panel-subtitle {
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+            margin-top:
+                2px;
+        }
+
+
+        /* ==================================================
+           FILTERS
+        ================================================== */
+
+        .filters {
+
+            display:
+                flex;
+
+            gap:
+                6px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        .filter {
+
+            border:
+                1px solid
+                var(--border);
+
+            background:
+                transparent;
+
+            color:
+                var(--muted);
+
+            border-radius:
+                7px;
+
+            padding:
+                7px 10px;
+
+            font-size:
+                10px;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .filter:hover {
+
+            color:
+                var(--text);
+
+            background:
+                var(--surface-2);
+        }
+
+
+        .filter.active {
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green);
+
+            border-color:
+                rgba(103,185,149,0.35);
+        }
+
+
+        /* ==================================================
+           BIN LIST
+        ================================================== */
+
+        .bin-list {
+
+            padding:
+                14px;
+
+            display:
+                grid;
+
+            gap:
+                10px;
+
+            max-height:
+                690px;
+
+            overflow-y:
+                auto;
+        }
+
+
+        /* ==================================================
+           BIN CARD
+           IMPORTANT:
+           HEIGHT IS AUTO
+           AI PRIORITY CANNOT BE CLIPPED
+        ================================================== */
+
+        .bin {
+
+            width:
+                100%;
+
+            min-height:
+                174px;
+
+            height:
+                auto;
+
+            padding:
+                14px;
+
+            display:
+                block;
+
+            overflow:
+                visible;
+
+            background:
+                var(--surface-2);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                var(--small-radius);
+
+            cursor:
+                pointer;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .bin:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color:
+                var(--border-strong);
+        }
+
+
+        .bin.selected {
+
+            border-color:
+                rgba(103,185,149,0.5);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(103,185,149,0.09),
+                    var(--surface-2)
+                );
+
+            box-shadow:
+                inset 3px 0 0
+                var(--green);
+        }
+
+
+        /* ==================================================
+           BIN TOP
+        ================================================== */
+
+        .bin-top {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                52px
+                minmax(0,1fr)
+                auto;
+
+            gap:
+                12px;
+
+            align-items:
+                center;
+        }
+
+
+        .bin-main-info {
+
+            min-width:
+                0;
+        }
+
+
+        /* ==================================================
+           FILL RING
+        ================================================== */
+
+        .ring {
+
+            --level:
+                0;
+
+            --ring:
+                var(--green);
+
+            width:
+                52px;
+
+            height:
+                52px;
+
+            border-radius:
+                50%;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            position:
+                relative;
+
+            background:
+
+                conic-gradient(
+                    var(--ring)
+                    calc(var(--level) * 1%),
+                    rgba(255,255,255,0.07)
+                    0
+                );
+        }
+
+
+        .ring::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                5px;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--surface);
+        }
+
+
+        .ring-inner {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                10px;
+
+            font-weight:
+                600;
+        }
+
+
+        /* ==================================================
+           BIN TEXT
+        ================================================== */
+
+        .bin-name {
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+        }
+
+
+        .bin-loc {
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+            margin-top:
+                2px;
+
+            white-space:
+                nowrap;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+        }
+
+
+        .tag {
+
+            display:
+                inline-block;
+
+            margin-top:
+                7px;
+
+            padding:
+                3px 7px;
+
+            border-radius:
+                5px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green);
+
+            font-size:
+                8px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.05em;
+        }
+
+
+        .tag.non {
+
+            color:
+                var(--blue);
+
+            background:
+                var(--blue-soft);
+        }
+
+
+        /* ==================================================
+           STATUS
+        ================================================== */
+
+        .pill {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                5px 8px;
+
+            border-radius:
+                6px;
+
+            font-size:
+                8px;
+
+            font-weight:
+                600;
+
+            text-transform:
+                uppercase;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .status-normal {
+
+            color:
+                var(--green);
+
+            background:
+                var(--green-soft);
+        }
+
+
+        .status-warning {
+
+            color:
+                var(--amber);
+
+            background:
+                var(--amber-soft);
+        }
+
+
+        .status-critical {
+
+            color:
+                var(--red);
+
+            background:
+                var(--red-soft);
+        }
+
+
+        /* ==================================================
+           PREDICTED FULL
+        ================================================== */
+
+        .bin-eta {
+
+            margin-top:
+                13px;
+
+            padding-top:
+                11px;
+
+            border-top:
+                1px solid
+                var(--border);
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+        }
+
+
+        .bin-eta strong {
+
+            color:
+                var(--text);
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                11px;
+        }
+
+
+        /* ==================================================
+           AI PRIORITY
+           FIXED VISIBILITY
+        ================================================== */
+
+        .ai-priority {
+
+            display:
+                block;
+
+            width:
+                100%;
+
+            margin-top:
+                12px;
+
+            padding-top:
+                11px;
+
+            border-top:
+                1px solid
+                var(--border);
+        }
+
+
+        .priority-header {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+        }
+
+
+        .priority-header strong {
+
+            color:
+                var(--text);
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                12px;
+        }
+
+
+        .priority-track {
+
+            width:
+                100%;
+
+            height:
+                5px;
+
+            margin-top:
+                7px;
+
+            overflow:
+                hidden;
+
+            border-radius:
+                99px;
+
+            background:
+                rgba(255,255,255,0.07);
+        }
+
+
+        .priority-fill {
+
+            height:
+                100%;
+
+            min-width:
+                0;
+
+            border-radius:
+                inherit;
+
+            transition:
+                width 0.5s ease;
+        }
+
+
+        .priority-fill.priority-urgent {
+
+            background:
+                var(--red);
+        }
+
+
+        .priority-fill.priority-high {
+
+            background:
+                var(--amber);
+        }
+
+
+        .priority-fill.priority-medium {
+
+            background:
+                var(--blue);
+        }
+
+
+        .priority-fill.priority-low {
+
+            background:
+                var(--green);
+        }
+
+
+        .priority-footer {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin-top:
+                6px;
+
+            font-size:
+                9px;
+
+            color:
+                var(--faint);
+        }
+
+
+        .priority-urgent {
+
+            color:
+                var(--red) !important;
+        }
+
+
+        .priority-high {
+
+            color:
+                var(--amber) !important;
+        }
+
+
+        .priority-medium {
+
+            color:
+                var(--blue) !important;
+        }
+
+
+        .priority-low {
+
+            color:
+                var(--green) !important;
+        }
+
+
+        /* ==================================================
+           EMPTY STATE
+        ================================================== */
+
+        .empty-state {
+
+            padding:
+                50px 20px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            align-items:
+                center;
+
+            text-align:
+                center;
+
+            color:
+                var(--muted);
+
+            gap:
+                5px;
+        }
+
+
+        .empty-icon {
+
+            color:
+                var(--green);
+
+            font-size:
+                30px;
+
+            margin-bottom:
+                4px;
+        }
+
+
+        /* ==================================================
+           DETAIL PANEL
+        ================================================== */
+
+        .detail-panel {
+
+            position:
+                sticky;
+
+            top:
+                20px;
+        }
+
+
+        .detail-body {
+
+            padding:
+                20px;
+        }
+
+
+        .detail-title {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                18px;
+
+            font-weight:
+                600;
+        }
+
+
+        .detail-sub {
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+            margin-top:
+                3px;
+
+            margin-bottom:
+                15px;
+        }
+
+
+        .detail-status-row {
+
+            display:
+                flex;
+
+            justify-content:
+                flex-end;
+
+            margin-bottom:
+                15px;
+        }
+
+
+        /* ==================================================
+           MAIN GAUGE
+        ================================================== */
+
+        .gauge {
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            padding:
+                5px 0 20px;
+        }
+
+
+        .gauge-ring {
+
+            --p:
+                0;
+
+            --c:
+                var(--green);
+
+            width:
+                175px;
+
+            height:
+                175px;
+
+            border-radius:
+                50%;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            position:
+                relative;
+
+            background:
+
+                conic-gradient(
+                    var(--c)
+                    calc(var(--p) * 1%),
+                    rgba(255,255,255,0.06)
+                    0
+                );
+        }
+
+
+        .gauge-ring::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                12px;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--surface);
+        }
+
+
+        .gauge-content {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            text-align:
+                center;
+        }
+
+
+        .gauge-value {
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                35px;
+
+            font-weight:
+                600;
+        }
+
+
+        .gauge-label {
+
+            color:
+                var(--muted);
+
+            font-size:
+                9px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.08em;
+        }
+
+
+        /* ==================================================
+           DETAIL META
+        ================================================== */
+
+        .detail-meta {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap:
+                8px;
+
+            margin-bottom:
+                14px;
+        }
+
+
+        .meta-card {
+
+            background:
+                var(--surface-2);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                7px;
+
+            padding:
+                11px;
+        }
+
+
+        .meta-label {
+
+            color:
+                var(--faint);
+
+            font-size:
+                8px;
+
+            text-transform:
+                uppercase;
+        }
+
+
+        .meta-value {
+
+            color:
+                var(--text);
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                12px;
+
+            margin-top:
+                4px;
+        }
+
+
+        /* ==================================================
+           DETAIL AI PRIORITY
+        ================================================== */
+
+        .detail-priority {
+
+            background:
+                var(--surface-2);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                8px;
+
+            padding:
+                14px;
+
+            margin-bottom:
+                14px;
+        }
+
+
+        .detail-priority-top {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .detail-priority-title {
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+        }
+
+
+        #detailPriority {
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                18px;
+
+            font-weight:
+                600;
+        }
+
+
+        .detail-priority-bar {
+
+            width:
+                100%;
+
+            height:
+                6px;
+
+            overflow:
+                hidden;
+
+            border-radius:
+                99px;
+
+            background:
+                rgba(255,255,255,0.07);
+        }
+
+
+        #detailPriorityFill {
+
+            width:
+                0%;
+
+            height:
+                100%;
+
+            border-radius:
+                inherit;
+
+            transition:
+                width 0.4s ease;
+        }
+
+
+        #detailPriorityFill.priority-urgent {
+
+            background:
+                var(--red);
+        }
+
+
+        #detailPriorityFill.priority-high {
+
+            background:
+                var(--amber);
+        }
+
+
+        #detailPriorityFill.priority-medium {
+
+            background:
+                var(--blue);
+        }
+
+
+        #detailPriorityFill.priority-low {
+
+            background:
+                var(--green);
+        }
+
+
+        .detail-priority-bottom {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            margin-top:
+                7px;
+
+            color:
+                var(--faint);
+
+            font-size:
+                8px;
+        }
+
+
+        /* ==================================================
+           AI INSIGHT
+        ================================================== */
+
+        .ai-insight {
+
+            background:
+                var(--green-soft);
+
+            border:
+                1px solid
+                rgba(103,185,149,0.15);
+
+            border-radius:
+                8px;
+
+            padding:
+                13px;
+
+            margin-bottom:
+                14px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+            line-height:
+                1.6;
+        }
+
+
+        .ai-insight strong {
+
+            display:
+                block;
+
+            color:
+                var(--green);
+
+            margin-bottom:
+                4px;
+        }
+
+
+        /* ==================================================
+           COLLECTION BUTTON
+        ================================================== */
+
+        .collect-button {
+
+            width:
+                100%;
+
+            border:
+                none;
+
+            border-radius:
+                8px;
+
+            padding:
+                13px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--green-dark)
+                );
+
+            color:
+                #07110d;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.2s ease;
+
+            box-shadow:
+                0 8px 25px
+                rgba(103,185,149,0.12);
+        }
+
+
+        .collect-button:hover:not(:disabled) {
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .collect-button:disabled {
+
+            opacity:
+                0.4;
+
+            cursor:
+                not-allowed;
+        }
+
+
+        /* ==================================================
+           ROUTES
+        ================================================== */
+
+        .routes-section {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                20px;
+
+            margin-top:
+                20px;
+        }
+
+
+        .route-card {
+
+            background:
+                var(--surface);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                var(--radius);
+
+            overflow:
+                hidden;
+        }
+
+
+        .route-header {
+
+            padding:
+                17px 20px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+        }
+
+
+        .route-name {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                14px;
+
+            font-weight:
+                600;
+        }
+
+
+        .truck-badge {
+
+            color:
+                var(--green);
+
+            background:
+                var(--green-soft);
+
+            border-radius:
+                5px;
+
+            padding:
+                5px 8px;
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                9px;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .route-stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            border-bottom:
+                1px solid
+                var(--border);
+        }
+
+
+        .route-stat {
+
+            padding:
+                12px;
+
+            text-align:
+                center;
+
+            border-right:
+                1px solid
+                var(--border);
+        }
+
+
+        .route-stat:last-child {
+
+            border-right:
+                none;
+        }
+
+
+        .route-stat-label {
+
+            color:
+                var(--faint);
+
+            font-size:
+                8px;
+
+            text-transform:
+                uppercase;
+        }
+
+
+        .route-stat-value {
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                12px;
+
+            margin-top:
+                4px;
+        }
+
+
+        .route-list {
+
+            padding:
+                10px;
+        }
+
+
+        .route-stop {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                27px
+                minmax(0,1fr)
+                auto;
+
+            gap:
+                9px;
+
+            align-items:
+                center;
+
+            padding:
+                9px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+        }
+
+
+        .route-stop:last-child {
+
+            border-bottom:
+                none;
+        }
+
+
+        .route-number {
+
+            width:
+                24px;
+
+            height:
+                24px;
+
+            border-radius:
+                6px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            background:
+                var(--surface-3);
+
+            color:
+                var(--green);
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                9px;
+        }
+
+
+        .route-bin-info {
+
+            min-width:
+                0;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+        }
+
+
+        .route-bin-info strong {
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                10px;
+        }
+
+
+        .route-bin-info span {
+
+            color:
+                var(--muted);
+
+            font-size:
+                8px;
+
+            margin-top:
+                2px;
+        }
+
+
+        .route-priority {
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size:
+                8px;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .route-empty {
+
+            padding:
+                22px;
+
+            text-align:
+                center;
+
+            color:
+                var(--green);
+
+            font-size:
+                10px;
+        }
+
+
+        /* ==================================================
+           TOAST
+        ================================================== */
+
+        #toast {
+
+            position:
+                fixed;
+
+            right:
+                22px;
+
+            bottom:
+                22px;
+
+            z-index:
+                999;
+
+            max-width:
+                min(
+                    420px,
+                    calc(100vw - 40px)
+                );
+
+            padding:
+                12px 16px;
+
+            border:
+                1px solid
+                rgba(103,185,149,0.3);
+
+            border-radius:
+                8px;
+
+            background:
+                #20382e;
+
+            color:
+                var(--text);
+
+            font-size:
+                10px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,0.35);
+
+            transform:
+                translateY(20px);
+
+            opacity:
+                0;
+
+            pointer-events:
+                none;
+
+            transition:
+                0.25s ease;
+        }
+
+
+        #toast.show {
+
+            transform:
+                translateY(0);
+
+            opacity:
+                1;
+        }
+
+
+        /* ==================================================
+           FOOTER
+        ================================================== */
+
+        footer {
+
+            padding:
+                30px 20px;
+
+            text-align:
+                center;
+
+            color:
+                var(--faint);
+
+            font-size:
+                9px;
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media (max-width:1100px) {
+
+            .dashboard-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .detail-panel {
+
+                position:
+                    relative;
+
+                top:
+                    auto;
+            }
+
+        }
+
+
+        @media (max-width:850px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+
+            .routes-section {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+
+        @media (max-width:600px) {
+
+            main {
+
+                width:
+                    calc(100% - 22px);
+
+                padding-top:
+                    22px;
+            }
+
+
+            header {
+
+                padding:
+                    14px 16px;
+            }
+
+
+            .header-right {
+
+                width:
+                    100%;
+            }
+
+
+            .live-status {
+
+                flex:
+                    1;
+            }
+
+
+            .stats {
+
+                gap:
+                    8px;
+            }
+
+
+            .stat {
+
+                padding:
+                    14px;
+            }
+
+
+            .stat-value {
+
+                font-size:
+                    23px;
+            }
+
+
+            .bin-top {
+
+                grid-template-columns:
+                    48px
+                    minmax(0,1fr);
+            }
+
+
+            .bin-top > .pill {
+
+                grid-column:
+                    2;
+
+                justify-self:
+                    start;
+            }
+
+
+            .route-stop {
+
+                grid-template-columns:
+                    27px
+                    minmax(0,1fr);
+            }
+
+
+            .route-priority {
+
+                grid-column:
+                    2;
+
+                justify-self:
+                    start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================================
+     HEADER
+========================================================= -->
+
+<header>
+
+
+    <div class="brand">
+
+
+        <div class="brand-mark">
+            <span>♻</span>
+        </div>
+
+
+        <div>
+
+            <div class="brand-title">
+                Smart Waste AI
+            </div>
+
+            <div class="brand-sub">
+                Intelligent City Waste Management Control Center
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="header-right">
+
+
+        <div class="live-status">
+
+            <span class="live-dot"></span>
+
+            <span>
+                LIVE NETWORK
+            </span>
+
+            <span id="clock">
+                --:--:--
+            </span>
+
+        </div>
+
+
+        <button
+            id="refreshBtn"
+            class="header-button"
+        >
+            ↻ Refresh
+        </button>
+
+
+        <button
+            id="demoBtn"
+            class="header-button primary"
+        >
+            ⚡ AI Dispatch
+        </button>
+
+
+    </div>
+
+
+</header>
+
+
+<!-- ========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+
+    <!-- ====================================================
+         HERO
+    ===================================================== -->
+
+    <section class="hero">
+
+        <div class="eyebrow">
+            CITY OPERATIONS / WASTE INTELLIGENCE
+        </div>
+
+
+        <h1>
+            Waste Collection<br>
+            Command Center
+        </h1>
+
+
+        <p class="hero-description">
+            Monitor city-wide dustbin levels, identify
+            critical collection points and use AI priority
+            scoring to optimize garbage collection.
+        </p>
+
+    </section>
+
+
+    <!-- ====================================================
+         STATISTICS
+    ===================================================== -->
+
+    <section class="stats">
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Bins Monitored
+            </div>
+
+            <div
+                id="total"
+                class="stat-value"
+            >
+                --
+            </div>
+
+            <div class="stat-note">
+                Connected waste sensors
+            </div>
+
+        </div>
+
+
+        <div class="stat stat-critical">
+
+            <div class="stat-label">
+                Critical Bins
+            </div>
+
+            <div
+                id="critical"
+                class="stat-value"
+            >
+                --
+            </div>
+
+            <div class="stat-note">
+                Above 85% fill level
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Need Collection
+            </div>
+
+            <div
+                id="needs"
+                class="stat-value"
+            >
+                --
+            </div>
+
+            <div class="stat-note">
+                Active collection candidates
+            </div>
+
+        </div>
+
+
+        <div class="stat stat-risk">
+
+            <div class="stat-label">
+                Overflow Risk
+            </div>
+
+            <div
+                id="risk"
+                class="stat-value"
+            >
+                --
+            </div>
+
+            <div class="stat-note">
+                Predicted risk cases
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- ====================================================
+         BIN NETWORK + SELECTED BIN
+    ===================================================== -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- =================================================
+             BIN NETWORK
+        ================================================== -->
+
+        <div class="panel">
+
+
+            <div class="panel-header">
+
+
+                <div>
+
+                    <div class="panel-title">
+                        City Bin Network
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Real-time fill levels and AI collection priority
+                    </div>
+
+                </div>
+
+
+                <div class="filters">
+
+
+                    <button
+                        class="filter active"
+                        data-filter="all"
+                    >
+                        All
+                    </button>
+
+
+                    <button
+                        class="filter"
+                        data-filter="degradable"
+                    >
+                        Degradable
+                    </button>
+
+
+                    <button
+                        class="filter"
+                        data-filter="non-degradable"
+                    >
+                        Non-degradable
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                id="binList"
+                class="bin-list"
+            >
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ◌
+                    </div>
+
+                    <strong>
+                        Loading waste network...
+                    </strong>
+
+                    <span>
+                        Connecting to FastAPI backend
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             SELECTED BIN
+        ================================================== -->
+
+        <div
+            class="panel detail-panel"
+        >
+
+
+            <div class="panel-header">
+
+
+                <div>
+
+                    <div class="panel-title">
+                        Selected Bin
+                    </div>
+
+                    <div class="panel-subtitle">
+                        AI monitoring and collection decision
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="detail-body">
+
+
+                <!-- BIN TITLE -->
+
+                <div
+                    id="detailTitle"
+                    class="detail-title"
+                >
+                    Select a bin
+                </div>
+
+
+                <div
+                    id="detailSub"
+                    class="detail-sub"
+                >
+                    Waiting for sensor data
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="detail-status-row">
+
+                    <span
+                        id="detailStatus"
+                        class="pill status-normal"
+                    >
+                        Normal
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     GAUGE
+                ================================================== -->
+
+                <div class="gauge">
+
+
+                    <div
+                        id="gaugeRing"
+                        class="gauge-ring"
+                        style="
+                            --p:0;
+                            --c:#67b995;
+                        "
+                    >
+
+
+                        <div class="gauge-content">
+
+
+                            <div
+                                id="detailLevel"
+                                class="gauge-value"
+                            >
+                                0%
+                            </div>
+
+
+                            <div class="gauge-label">
+                                Fill Level
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     META
+                ================================================== -->
+
+                <div class="detail-meta">
+
+
+                    <div class="meta-card">
+
+                        <div class="meta-label">
+                            Fill Rate
+                        </div>
+
+                        <div
+                            id="detailRate"
+                            class="meta-value"
+                        >
+                            -- / hr
+                        </div>
+
+                    </div>
+
+
+                    <div class="meta-card">
+
+                        <div class="meta-label">
+                            Predicted Full
+                        </div>
+
+                        <div
+                            id="detailEta"
+                            class="meta-value"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                    <div class="meta-card">
+
+                        <div class="meta-label">
+                            AI Priority
+                        </div>
+
+                        <div
+                            id="detailPrioritySmall"
+                            class="meta-value"
+                        >
+                            0.0
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     AI PRIORITY
+                ================================================== -->
+
+                <div class="detail-priority">
+
+
+                    <div class="detail-priority-top">
+
+
+                        <span class="detail-priority-title">
+                            AI Collection Priority
+                        </span>
+
+
+                        <strong
+                            id="detailPriority"
+                        >
+                            0.0
+                        </strong>
+
+
+                    </div>
+
+
+                    <div class="detail-priority-bar">
+
+
+                        <div
+                            id="detailPriorityFill"
+                            class="priority-low"
+                        ></div>
+
+
+                    </div>
+
+
+                    <div class="detail-priority-bottom">
+
+
+                        <span>
+                            0 — Low urgency
+                        </span>
+
+
+                        <span
+                            id="detailPriorityLabel"
+                            class="priority-low"
+                        >
+                            LOW
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     AI INSIGHT
+                ================================================== -->
+
+                <div class="ai-insight">
+
+
+                    <strong>
+                        ✦ AI Recommendation
+                    </strong>
+
+
+                    <span id="detailInsight">
+                        Waiting for bin analysis.
+                    </span>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     COLLECTION
+                ================================================== -->
+
+                <button
+                    id="collectBtn"
+                    class="collect-button"
+                    disabled
+                >
+                    ✓ Bin already empty
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- ====================================================
+         ROUTES
+    ===================================================== -->
+
+    <section class="routes-section">
+
+
+        <!-- =================================================
+             DEGRADABLE ROUTE
+        ================================================== -->
+
+        <div class="route-card">
+
+
+            <div class="route-header">
+
+
+                <div class="route-name">
+                    🟢 Degradable Collection Route
+                </div>
+
+
+                <div class="truck-badge">
+                    TRUCK GRN-01
+                </div>
+
+
+            </div>
+
+
+            <div class="route-stats">
+
+
+                <div class="route-stat">
+
+                    <div class="route-stat-label">
+                        Stops
+                    </div>
+
+                    <div
+                        id="degStops"
+                        class="route-stat-value"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="route-stat">
+
+                    <div class="route-stat-label">
+                        Distance
+                    </div>
+
+                    <div
+                        id="degKm"
+                        class="route-stat-value"
+                    >
+                        0 km
+                    </div>
+
+                </div>
+
+
+                <div class="route-stat">
+
+                    <div class="route-stat-label">
+                        Est. Time
+                    </div>
+
+                    <div
+                        id="degTime"
+                        class="route-stat-value"
+                    >
+                        0 min
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                id="degRoute"
+                class="route-list"
+            >
+
+                <div class="route-empty">
+                    Loading route...
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             NON-DEGRADABLE ROUTE
+        ================================================== -->
+
+        <div class="route-card">
+
+
+            <div class="route-header">
+
+
+                <div class="route-name">
+                    🔵 Non-degradable Collection Route
+                </div>
+
+
+                <div class="truck-badge">
+                    TRUCK BLU-02
+                </div>
+
+
+            </div>
+
+
+            <div class="route-stats">
+
+
+                <div class="route-stat">
+
+                    <div class="route-stat-label">
+                        Stops
+                    </div>
+
+                    <div
+                        id="nonStops"
+                        class="route-stat-value"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="route-stat">
+
+                    <div class="route-stat-label">
+                        Distance
+                    </div>
+
+                    <div
+                        id="nonKm"
+                        class="route-stat-value"
+                    >
+                        0 km
+                    </div>
+
+                </div>
+
+
+                <div class="route-stat">
+
+                    <div class="route-stat-label">
+                        Est. Time
+                    </div>
+
+                    <div
+                        id="nonTime"
+                        class="route-stat-value"
+                    >
+                        0 min
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                id="nonRoute"
+                class="route-list"
+            >
+
+                <div class="route-empty">
+                    Loading route...
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<!-- ========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    Smart Waste AI · Intelligent Waste Collection
+    Optimization System · SIH 2026 Prototype
+
+</footer>
+
+
+<!-- ========================================================
+     TOAST
+========================================================= -->
+
+<div id="toast"></div>
+
+
+<!-- ========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script
+    src="js/api.js"
+    defer
+></script>
+
+
+<script
+    src="js/dashboard.js"
+    defer
+></script>
+
+
+</body>
+
+</html>
