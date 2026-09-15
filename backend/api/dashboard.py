@@ -3,7 +3,7 @@ from ..services.bin_service import get_bins
 
 router = APIRouter(
     prefix="/api/dashboard",
-    tags=["Dashboard"]
+    tags=["Dashboard", "Dynamic"]
 )
 
 
