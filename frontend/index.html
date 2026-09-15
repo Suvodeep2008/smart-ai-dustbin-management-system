@@ -436,6 +436,22 @@
                 rgba(103,185,149,0.3);
         }
 
+        /* ==================================================
+   LOGOUT BUTTON
+================================================== */
+
+        .logout-button {
+            color: var(--red);
+            background: var(--red-soft);
+            border-color: rgba(223,107,85,0.3);
+        }   
+
+        .logout-button:hover {
+            background: rgba(223,107,85,0.18);
+            border-color: rgba(223,107,85,0.5);
+            transform: translateY(-1px);
+        }
+
 
         /* ==================================================
            MAIN
@@ -3636,6 +3652,52 @@
     defer
 ></script>
 
+
+<script>
+/* ==================================================
+   LOGOUT
+================================================== */
+
+function logoutUser() {
+
+    // Clear the current login session
+    sessionStorage.removeItem("smartWasteLoggedIn");
+
+    // Hide the dashboard
+    document.querySelector("header").style.display = "none";
+    document.querySelector("main").style.display = "none";
+    document.querySelector("footer").style.display = "none";
+
+    // Show the login screen
+    const authScreen = document.getElementById("authScreen");
+
+    if (authScreen) {
+        authScreen.style.display = "flex";
+    }
+
+    // Reset login form
+    const loginEmail = document.getElementById("loginEmail");
+    const loginPassword = document.getElementById("loginPassword");
+    const loginMessage = document.getElementById("loginMessage");
+
+    if (loginEmail) {
+        loginEmail.value = "";
+    }
+
+    if (loginPassword) {
+        loginPassword.value = "";
+    }
+
+    if (loginMessage) {
+        loginMessage.textContent = "";
+    }
+
+    // Always return to Login view
+    if (typeof showLogin === "function") {
+        showLogin();
+    }
+}
+</script>
 
 </body>
 
