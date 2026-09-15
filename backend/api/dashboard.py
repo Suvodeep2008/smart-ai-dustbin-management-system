@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from ..services.bin_service import get_bins
+from services.bin_service import get_bins
 
 router = APIRouter(
     prefix="/api/dashboard",
