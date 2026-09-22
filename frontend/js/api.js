@@ -2,7 +2,7 @@
 // SMART WASTE AI - API CONNECTION
 // ============================================================
 
-const API_BASE_URL = "https://smart-ai-dustbin-management-system.onrender.com/api";
+const API_BASE_URL = "https://smart-ai-dustbin-api.onrender.com/api";
 
 // ============================================================
 // GENERIC API REQUEST
