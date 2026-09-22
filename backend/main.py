@@ -6,6 +6,13 @@ from api.dashboard import router as dashboard_router
 from api.routes import router as routes_router
 from api.trucks import router as trucks_router
 from api.ai import router as ai_router
+from api.auth import router as auth_router
+
+from database.database import Base, engine
+from database import models
+
+
+Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI(
@@ -47,6 +54,7 @@ app.include_router(dashboard_router)
 app.include_router(ai_router)
 app.include_router(routes_router)
 app.include_router(trucks_router)
+app.include_router(auth_router)
 
 
 # ============================================================

@@ -46,6 +46,555 @@
     <style>
 
         /* ==================================================
+        AUTHENTICATION LOADING STATE
+           ================================================== */
+
+        body.auth-checking > header,
+        body.auth-checking > main,
+        body.auth-checking > footer {
+           visibility: hidden;
+        }
+
+
+        /* ==================================================
+   FUTURISTIC SIDEBAR
+================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            bottom: 0;
+
+            width: 270px;
+
+            z-index: 900;
+
+            display: flex;
+
+            flex-direction: column;
+
+            padding: 24px 16px 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(5, 20, 24, 0.98),
+                    rgba(4, 17, 19, 0.98)
+                );
+
+            border-right:
+                1px solid
+                rgba(99,175,212,0.13);
+
+            box-shadow:
+                12px 0 45px
+                rgba(0,0,0,0.18);
+
+            overflow-y: auto;
+
+            scrollbar-width: none;
+
+            transition:
+                0.3s ease;
+        }
+
+
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        /* ==================================================
+        SIDEBAR BRAND
+        ================================================== */
+
+        .sidebar-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding:
+                4px 8px 25px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .sidebar-logo {
+
+            width: 43px;
+            height: 43px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #20e5ae,
+                    #277e78
+                );
+
+            color: #03130f;
+
+            font-size: 22px;
+
+            box-shadow:
+                0 0 25px
+                rgba(32,229,174,0.22);
+
+            animation:
+                sidebarLogoPulse 3s
+                ease-in-out infinite;
+        }
+
+
+        @keyframes sidebarLogoPulse {
+
+            0%,
+            100% {
+                box-shadow:
+                    0 0 20px
+                    rgba(32,229,174,0.16);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 35px
+                    rgba(32,229,174,0.32);
+            }
+        }
+
+
+        .sidebar-title {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            letter-spacing:
+                -0.03em;
+        }
+
+
+        .sidebar-title span {
+            color: #20e5ae;
+        }
+
+
+        .sidebar-subtitle {
+
+            margin-top: 2px;
+
+            color:
+                var(--muted);
+
+            font-size: 8px;
+
+            white-space: nowrap;
+        }
+
+
+        /* ==================================================
+        NAVIGATION
+        ================================================== */
+
+        .sidebar-nav {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+
+            margin-top: 25px;
+        }
+
+
+        .sidebar-item {
+
+            position: relative;
+
+            width: 100%;
+
+            min-height: 47px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            padding:
+                0 13px;
+
+            border:
+                1px solid transparent;
+
+            border-radius: 11px;
+
+            background:
+                transparent;
+
+            color:
+                var(--muted);
+
+            font-family:
+                "IBM Plex Sans",
+                sans-serif;
+
+            font-size: 11px;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition:
+                0.25s ease;
+        }
+
+
+        .sidebar-item::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -16px;
+
+            top: 9px;
+            bottom: 9px;
+
+            width: 3px;
+
+            border-radius:
+                0 4px 4px 0;
+
+            background:
+                transparent;
+
+            transition:
+                0.25s ease;
+        }
+
+
+        .sidebar-item:hover {
+
+            color:
+                var(--text);
+
+            background:
+                rgba(99,175,212,0.06);
+
+            border-color:
+                rgba(99,175,212,0.10);
+
+            transform:
+                translateX(3px);
+        }
+
+
+        .sidebar-item.active {
+
+            color:
+                #20e5ae;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(32,229,174,0.15),
+                    rgba(32,229,174,0.035)
+                );
+
+            border-color:
+                rgba(32,229,174,0.28);
+
+            box-shadow:
+                inset 0 0 25px
+                rgba(32,229,174,0.025),
+                0 0 18px
+                rgba(32,229,174,0.05);
+        }
+
+
+        .sidebar-item.active::before {
+
+            background:
+                #20e5ae;
+
+            box-shadow:
+                0 0 14px
+                #20e5ae;
+        }
+
+
+        .sidebar-icon {
+
+            width: 22px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            color:
+                var(--muted);
+
+            font-size: 17px;
+
+            transition:
+                0.25s ease;
+        }
+
+
+        .sidebar-item:hover
+        .sidebar-icon {
+
+            color:
+                #63afd4;
+        }
+
+
+        .sidebar-item.active
+        .sidebar-icon {
+
+            color:
+                #20e5ae;
+
+            filter:
+                drop-shadow(
+                    0 0 7px
+                    rgba(32,229,174,0.5)
+                );
+        }
+
+
+        /* ==================================================
+        SIDEBAR FOOTER
+        ================================================== */
+
+        .sidebar-footer {
+
+            margin-top: auto;
+
+            padding:
+                22px 10px 8px;
+
+            text-align: center;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .sidebar-leaf {
+
+            width: 55px;
+            height: 55px;
+
+            margin:
+                0 auto 13px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color:
+                #20e5ae;
+
+            border:
+                1px solid
+                rgba(32,229,174,0.25);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(32,229,174,0.12),
+                    transparent 70%
+                );
+
+            font-size: 27px;
+
+            box-shadow:
+                0 0 25px
+                rgba(32,229,174,0.08);
+
+            animation:
+                sidebarLeafFloat 4s
+                ease-in-out infinite;
+        }
+
+
+        @keyframes sidebarLeafFloat {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateY(-5px);
+            }
+        }
+
+
+        .sidebar-footer-title {
+
+            color:
+                var(--text);
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        .sidebar-footer-subtitle {
+
+            margin-top: 3px;
+
+            color:
+                #20e5ae;
+
+            font-size: 9px;
+        }
+
+
+        /* ==================================================
+        MOVE DASHBOARD BESIDE SIDEBAR
+        ================================================== */
+
+        body:not(.auth-checking) header,
+        body:not(.auth-checking) main,
+        body:not(.auth-checking) footer {
+
+            margin-left:
+                270px;
+        }
+
+
+        /* ==================================================
+        AUTH LOADING
+        ================================================== */
+
+        body.auth-checking .sidebar {
+
+            visibility: hidden;
+        }
+
+
+        /* ==================================================
+        RESPONSIVE
+        ================================================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+
+                width: 76px;
+
+                padding:
+                    20px 10px;
+            }
+
+
+            .sidebar-brand {
+
+                justify-content: center;
+
+                padding:
+                    4px 0 20px;
+            }
+
+
+            .sidebar-brand-text {
+
+                display: none;
+            }
+
+
+            .sidebar-item {
+
+                justify-content: center;
+
+                padding: 0;
+            }
+
+
+            .sidebar-item span:last-child {
+
+                display: none;
+            }
+
+
+            .sidebar-icon {
+
+                width: auto;
+            }
+
+
+            .sidebar-footer {
+
+                display: none;
+            }
+
+
+            body:not(.auth-checking) header,
+            body:not(.auth-checking) main,
+            body:not(.auth-checking) footer {
+
+                margin-left:
+                    76px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+
+                width: 62px;
+            }
+
+
+            body:not(.auth-checking) header,
+            body:not(.auth-checking) main,
+            body:not(.auth-checking) footer {
+
+                margin-left:
+                    62px;
+            }
+        }
+
+        /* ==================================================
            VARIABLES
         ================================================== */
 
@@ -452,6 +1001,481 @@
             transform: translateY(-1px);
         }
 
+        /* ==================================================
+   FUTURISTIC USER PROFILE
+================================================== */
+
+        .user-profile {
+            position: relative;
+        }
+
+
+        /* PROFILE BUTTON */
+
+        .user-profile-button {
+
+            min-height: 48px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 6px 10px 6px 7px;
+
+            border-radius: 12px;
+
+            border: 1px solid
+                rgba(99, 175, 212, 0.22);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(18, 33, 27, 0.92),
+                    rgba(10, 25, 31, 0.92)
+                );
+
+            color: var(--text);
+
+            cursor: pointer;
+
+            transition:
+                0.25s ease;
+
+            box-shadow:
+                0 0 0 rgba(99, 175, 212, 0);
+        }
+
+
+        .user-profile-button:hover {
+
+            border-color:
+                rgba(99, 175, 212, 0.55);
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 0 25px
+                rgba(99, 175, 212, 0.12);
+        }
+
+
+        /* AVATAR */
+
+        .user-avatar {
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #63afd4,
+                    #67b995
+                );
+
+            box-shadow:
+                0 0 15px
+                rgba(99, 175, 212, 0.25);
+
+            font-size: 16px;
+        }
+
+
+        /* USER TEXT */
+
+        .user-profile-info {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            min-width: 105px;
+        }
+
+
+        .user-welcome {
+
+            color:
+                var(--muted);
+
+            font-size: 8px;
+
+            line-height: 1.2;
+        }
+
+
+        .user-name {
+
+            max-width: 145px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+            color:
+                var(--text);
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            line-height: 1.4;
+        }
+
+
+        .user-chevron {
+
+            color:
+                var(--muted);
+
+            font-size: 16px;
+
+            transition:
+                transform 0.25s ease;
+        }
+
+
+        .user-profile.active
+        .user-chevron {
+
+            transform:
+                rotate(180deg);
+
+            color:
+                var(--green);
+        }
+
+
+        /* ==================================================
+        PROFILE DROPDOWN
+        ================================================== */
+
+        .user-dropdown {
+
+            position: absolute;
+
+            top: calc(100% + 10px);
+
+            right: 0;
+
+            width: 285px;
+
+            padding: 12px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(8, 25, 30, 0.98),
+                    rgba(7, 20, 20, 0.98)
+                );
+
+            border:
+                1px solid
+                rgba(99, 175, 212, 0.28);
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,0.55),
+                0 0 35px
+                rgba(99,175,212,0.08);
+
+            backdrop-filter:
+                blur(20px);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transform:
+                translateY(-8px)
+                scale(0.97);
+
+            transform-origin:
+                top right;
+
+            transition:
+                opacity 0.22s ease,
+                transform 0.22s ease,
+                visibility 0.22s ease;
+
+            z-index: 1000;
+        }
+
+
+        .user-profile.active
+        .user-dropdown {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+
+        /* ==================================================
+        DROPDOWN USER
+        ================================================== */
+
+        .dropdown-user {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 9px;
+        }
+
+
+        .dropdown-avatar {
+
+            width: 46px;
+            height: 46px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #63afd4,
+                    #67b995
+                );
+
+            box-shadow:
+                0 0 20px
+                rgba(99,175,212,0.2);
+
+            font-size: 20px;
+        }
+
+
+        .dropdown-name {
+
+            color:
+                var(--text);
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .dropdown-email {
+
+            max-width: 180px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+            color:
+                var(--muted);
+
+            font-size: 9px;
+
+            margin-top: 2px;
+        }
+
+
+        .user-role {
+
+            display: inline-block;
+
+            margin-top: 5px;
+
+            padding: 2px 7px;
+
+            border-radius: 5px;
+
+            color:
+                var(--blue);
+
+            background:
+                var(--blue-soft);
+
+            border:
+                1px solid
+                rgba(99,175,212,0.2);
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size: 7px;
+
+            letter-spacing:
+                0.08em;
+        }
+
+
+        /* ==================================================
+        DIVIDER
+        ================================================== */
+
+        .dropdown-divider {
+
+            height: 1px;
+
+            margin: 8px 3px;
+
+            background:
+                rgba(255,255,255,0.08);
+        }
+
+
+        /* ==================================================
+        DROPDOWN ITEMS
+        ================================================== */
+
+        .dropdown-item {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 11px 10px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background:
+                transparent;
+
+            color:
+                var(--muted);
+
+            text-align: left;
+
+            font-size: 10px;
+
+            cursor: pointer;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .dropdown-item span {
+
+            width: 20px;
+
+            color:
+                var(--blue);
+
+            font-size: 14px;
+
+            text-align: center;
+        }
+
+
+        .dropdown-item:hover {
+
+            color:
+                var(--text);
+
+            background:
+                rgba(99,175,212,0.08);
+
+            transform:
+                translateX(3px);
+        }
+
+
+        /* ==================================================
+        LOGOUT
+        ================================================== */
+
+        .dropdown-item.dropdown-logout {
+
+            color:
+                var(--red);
+        }
+
+
+        .dropdown-item.dropdown-logout span {
+
+            color:
+                var(--red);
+        }
+
+
+        .dropdown-item.dropdown-logout:hover {
+
+            background:
+                var(--red-soft);
+        }
+
+
+        /* ==================================================
+        DROPDOWN FOOTER
+        ================================================== */
+
+        .dropdown-footer {
+
+            padding:
+                12px 8px 7px;
+
+            text-align: center;
+
+            color:
+                var(--faint);
+
+            font-size: 8px;
+
+            line-height: 1.6;
+        }
+
+
+        .dropdown-footer span {
+
+            color:
+                var(--green);
+
+            font-weight: 600;
+        }
+
 
         /* ==================================================
            MAIN
@@ -582,6 +1606,580 @@
             padding:
                 20px;
         }
+
+        /* ==================================================
+   FUTURISTIC STATISTICS CARDS
+================================================== */
+
+        .futuristic-stat {
+
+            position: relative;
+
+            min-height: 190px;
+
+            overflow: hidden;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(10, 31, 32, 0.94),
+                    rgba(5, 19, 22, 0.96)
+                );
+
+            border:
+                1px solid
+                rgba(99, 175, 212, 0.16);
+
+            box-shadow:
+                inset 0 1px 0
+                rgba(255,255,255,0.025),
+                0 12px 35px
+                rgba(0,0,0,0.18);
+
+            transition:
+                transform 0.28s ease,
+                border-color 0.28s ease,
+                box-shadow 0.28s ease;
+
+            animation:
+                statAppear 0.7s ease both;
+        }
+
+
+        .futuristic-stat:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .futuristic-stat:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+
+        .futuristic-stat:nth-child(3) {
+            animation-delay: 0.19s;
+        }
+
+        .futuristic-stat:nth-child(4) {
+            animation-delay: 0.26s;
+        }
+
+
+        @keyframes statAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(15px)
+                    scale(0.97);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+        }
+
+
+        /* HOVER */
+
+        .futuristic-stat:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(99, 175, 212, 0.38);
+
+            box-shadow:
+                0 18px 45px
+                rgba(0,0,0,0.28),
+                0 0 25px
+                rgba(99,175,212,0.07);
+        }
+
+
+        /* TOP ROW */
+
+        .stat-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 17px;
+        }
+
+
+        /* ICON */
+
+        .stat-icon {
+
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            transition:
+                transform 0.3s ease;
+        }
+
+
+        .futuristic-stat:hover
+        .stat-icon {
+
+            transform:
+                scale(1.08)
+                rotate(-3deg);
+        }
+
+
+        .stat-icon-green {
+
+            color: #20e5ae;
+
+            background:
+                rgba(32,229,174,0.10);
+
+            border:
+                1px solid
+                rgba(32,229,174,0.20);
+
+            box-shadow:
+                0 0 22px
+                rgba(32,229,174,0.08);
+        }
+
+
+        .stat-icon-red {
+
+            color: #ff6262;
+
+            background:
+                rgba(255,70,70,0.10);
+
+            border:
+                1px solid
+                rgba(255,70,70,0.22);
+
+            box-shadow:
+                0 0 22px
+                rgba(255,70,70,0.08);
+
+            animation:
+                criticalIconPulse 2.2s
+                ease-in-out infinite;
+        }
+
+
+        @keyframes criticalIconPulse {
+
+            0%,
+            100% {
+
+                box-shadow:
+                    0 0 15px
+                    rgba(255,70,70,0.08);
+
+            }
+
+            50% {
+
+                box-shadow:
+                    0 0 28px
+                    rgba(255,70,70,0.22);
+
+            }
+        }
+
+
+        .stat-icon-blue {
+
+            color: #48b9ff;
+
+            background:
+                rgba(72,185,255,0.10);
+
+            border:
+                1px solid
+                rgba(72,185,255,0.20);
+
+            box-shadow:
+                0 0 22px
+                rgba(72,185,255,0.08);
+        }
+
+
+        .stat-icon-purple {
+
+            color: #b06cff;
+
+            background:
+                rgba(176,108,255,0.10);
+
+            border:
+                1px solid
+                rgba(176,108,255,0.20);
+
+            box-shadow:
+                0 0 22px
+                rgba(176,108,255,0.08);
+        }
+
+
+        /* TREND LABEL */
+
+        .stat-trend {
+
+            padding:
+                5px 8px;
+
+            border-radius: 7px;
+
+            font-family:
+                "IBM Plex Mono",
+                monospace;
+
+            font-size: 7px;
+
+            font-weight: 600;
+
+            letter-spacing:
+                0.05em;
+        }
+
+
+        .trend-green {
+
+            color: #20e5ae;
+
+            background:
+                rgba(32,229,174,0.07);
+
+            border:
+                1px solid
+                rgba(32,229,174,0.13);
+        }
+
+
+        .trend-red {
+
+            color: #ff6262;
+
+            background:
+                rgba(255,70,70,0.07);
+
+            border:
+                1px solid
+                rgba(255,70,70,0.13);
+        }
+
+
+        .trend-blue {
+
+            color: #48b9ff;
+
+            background:
+                rgba(72,185,255,0.07);
+
+            border:
+                1px solid
+                rgba(72,185,255,0.13);
+        }
+
+
+        .trend-purple {
+
+            color: #b06cff;
+
+            background:
+                rgba(176,108,255,0.07);
+
+            border:
+                1px solid
+                rgba(176,108,255,0.13);
+        }
+
+
+        /* LABEL */
+
+        .futuristic-stat .stat-label {
+
+            color:
+                #91aaa3;
+
+            font-size: 9px;
+
+            font-weight: 600;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.09em;
+        }
+
+
+        /* NUMBER */
+
+        .futuristic-stat .stat-value {
+
+            margin-top: 5px;
+
+            color:
+                #f2fffb;
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size: 38px;
+
+            line-height: 1;
+
+            font-weight: 700;
+
+            letter-spacing:
+                -0.04em;
+
+            text-shadow:
+                0 0 25px
+                rgba(255,255,255,0.06);
+
+            animation:
+                valueGlow 2.8s
+                ease-in-out infinite;
+        }
+
+
+        @keyframes valueGlow {
+
+            0%,
+            100% {
+                text-shadow:
+                    0 0 18px
+                    rgba(255,255,255,0.04);
+            }
+
+            50% {
+                text-shadow:
+                    0 0 28px
+                    rgba(99,255,177,0.12);
+            }
+        }
+
+
+        .stat-critical .stat-value {
+
+            color:
+                #ff6262;
+
+            text-shadow:
+                0 0 22px
+                rgba(255,70,70,0.15);
+        }
+
+
+        .stat-risk .stat-value {
+
+            color:
+                #b06cff;
+
+            text-shadow:
+                0 0 22px
+                rgba(176,108,255,0.13);
+        }
+
+
+        /* BOTTOM */
+
+        .stat-bottom {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 14px;
+        }
+
+
+        .futuristic-stat .stat-note {
+
+            color:
+                #607a73;
+
+            font-size: 8px;
+
+            line-height: 1.4;
+        }
+
+
+        /* PULSING DOT */
+
+        .stat-pulse {
+
+            width: 7px;
+            height: 7px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background:
+                #20e5ae;
+
+            box-shadow:
+                0 0 12px
+                #20e5ae;
+
+            animation:
+                statPulse 1.8s
+                ease-in-out infinite;
+        }
+
+
+        .critical-pulse {
+
+            background:
+                #ff6262;
+
+            box-shadow:
+                0 0 12px
+                #ff6262;
+        }
+
+
+        .blue-pulse {
+
+            background:
+                #48b9ff;
+
+            box-shadow:
+                0 0 12px
+                #48b9ff;
+        }
+
+
+        .purple-pulse {
+
+            background:
+                #b06cff;
+
+            box-shadow:
+                0 0 12px
+                #b06cff;
+        }
+
+
+        @keyframes statPulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(0.75);
+
+                opacity:
+                    0.55;
+
+            }
+
+            50% {
+
+                transform:
+                    scale(1.15);
+
+                opacity:
+                    1;
+
+            }
+        }
+
+
+        /* BACKGROUND GLOW */
+
+        .stat-glow {
+
+            position: absolute;
+
+            right: -45px;
+            bottom: -55px;
+
+            width: 145px;
+            height: 145px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(32,229,174,0.12),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+
+            transition:
+                transform 0.4s ease;
+        }
+
+
+        .futuristic-stat:hover
+        .stat-glow {
+
+            transform:
+                scale(1.25);
+        }
+
+
+        .stat-critical
+        .stat-glow {
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,70,70,0.12),
+                    transparent 68%
+                );
+        }
+
+
+        .stat-risk
+        .stat-glow {
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(176,108,255,0.12),
+                    transparent 68%
+                );
+        }
+
 
 
         .stat::after {
@@ -2579,7 +4177,143 @@
 </head>
 
 
-<body>
+<body class="auth-checking">
+
+<!-- ========================================================
+     FUTURISTIC SIDEBAR
+========================================================= -->
+
+<aside class="sidebar">
+
+    <!-- BRAND -->
+
+    <div class="sidebar-brand">
+
+        <div class="sidebar-logo">
+            ♻
+        </div>
+
+        <div class="sidebar-brand-text">
+
+            <div class="sidebar-title">
+                Smart<span>Waste</span>
+            </div>
+
+            <div class="sidebar-subtitle">
+                AI Powered Clean Cities
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-nav">
+
+        <button
+            class="sidebar-item active"
+            type="button"
+        >
+            <span class="sidebar-icon">⌂</span>
+            <span>Dashboard</span>
+        </button>
+
+
+        <button
+            class="sidebar-item"
+            type="button"
+        >
+            <span class="sidebar-icon">⌖</span>
+            <span>Live Map</span>
+        </button>
+
+
+        <button
+            class="sidebar-item"
+            type="button"
+        >
+            <span class="sidebar-icon">♻</span>
+            <span>Bins</span>
+        </button>
+
+
+        <button
+            class="sidebar-item"
+            type="button"
+        >
+            <span class="sidebar-icon">▣</span>
+            <span>Trucks</span>
+        </button>
+
+
+        <button
+            class="sidebar-item"
+            type="button"
+        >
+            <span class="sidebar-icon">⌁</span>
+            <span>Route Planning</span>
+        </button>
+
+
+        <button
+            class="sidebar-item"
+            type="button"
+        >
+            <span class="sidebar-icon">⌁</span>
+            <span>Analytics</span>
+        </button>
+
+
+        <button
+            class="sidebar-item"
+            type="button"
+        >
+            <span class="sidebar-icon">✦</span>
+            <span>AI Predictions</span>
+        </button>
+
+
+        <button
+            class="sidebar-item"
+            type="button"
+        >
+            <span class="sidebar-icon">▤</span>
+            <span>Reports</span>
+        </button>
+
+
+        <button
+            class="sidebar-item"
+            type="button"
+        >
+            <span class="sidebar-icon">⚙</span>
+            <span>Settings</span>
+        </button>
+
+    </nav>
+
+
+    <!-- SIDEBAR FOOTER -->
+
+    <div class="sidebar-footer">
+
+        <div class="sidebar-leaf">
+            ♧
+        </div>
+
+        <div class="sidebar-footer-title">
+            Clean Today
+        </div>
+
+        <div class="sidebar-footer-subtitle">
+            Greener Tomorrow
+        </div>
+
+    </div>
+
+</aside>
 
 <!-- ========================================================
      LOGIN / SIGN UP SCREEN
@@ -2805,14 +4539,130 @@
             ⚡ AI Dispatch
         </button>
 
-        <button
-           id="logoutBtn"
-           class="header-button logout-button"
-           type="button"
-           onclick="logoutUser()"
-        >
-            ⇥ Logout
-        </button>
+        <!-- USER PROFILE -->
+        <div class="user-profile">
+
+            <button
+                type="button"
+                class="user-profile-button"
+                onclick="this.parentElement.classList.toggle('active')"
+            >
+
+                <div class="user-avatar">
+                    <span>👤</span>
+                </div>
+
+                <div class="user-profile-info">
+
+                    <span class="user-welcome">
+                        Welcome back,
+                    </span>
+
+                    <span
+                        id="userName"
+                        class="user-name"
+                    >
+                        User
+                    </span>
+
+                </div>
+
+                <span class="user-chevron">
+                ⌄
+                </span>
+
+            </button>
+
+
+            <!-- PROFILE DROPDOWN -->
+
+            <div
+                id="userDropdown"
+                class="user-dropdown"
+            >
+
+                <div class="dropdown-user">
+
+                    <div class="dropdown-avatar">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <div
+                            id="dropdownUserName"
+                            class="dropdown-name"
+                        >
+                            User
+                        </div>
+
+                        <div
+                            id="dropdownUserEmail"
+                            class="dropdown-email"
+                        >
+                            —
+                        </div>
+
+                        <span class="user-role">
+                            USER
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dropdown-divider"></div>
+
+
+                <button
+                    type="button"
+                    class="dropdown-item"
+                >
+                    <span>♙</span>
+                    My Profile
+                </button>
+
+
+                <button
+                    type="button"
+                    class="dropdown-item"
+                >
+                    <span>⚙</span>
+                    Settings
+                </button>
+
+
+                <button
+                    type="button"
+                    class="dropdown-item"
+                >
+                    <span>?</span>
+                    Help & Support
+                </button>
+
+
+                <div class="dropdown-divider"></div>
+
+
+                <button
+                    type="button"
+                    class="dropdown-item dropdown-logout"
+                    onclick="logoutUser()"
+                >
+                    <span>⇥</span>
+                    Logout
+                </button>
+
+
+                <div class="dropdown-footer">
+                    Cleaner Cities<br>
+                    <span>Brighter Tomorrows</span>
+                </div>
+
+            </div>
+
+        </div>
 
 
     </div>
@@ -2857,11 +4707,26 @@
     <!-- ====================================================
          STATISTICS
     ===================================================== -->
-
     <section class="stats">
 
+        <!-- TOTAL BINS -->
 
-        <div class="stat">
+        <div class="stat futuristic-stat">
+
+            <div class="stat-glow"></div>
+
+            <div class="stat-top">
+
+                <div class="stat-icon stat-icon-green">
+                    ♻
+                </div>
+
+                <div class="stat-trend trend-green">
+                    ↑ LIVE
+                </div>
+
+            </div>
+
 
             <div class="stat-label">
                 Bins Monitored
@@ -2874,14 +4739,37 @@
                 --
             </div>
 
-            <div class="stat-note">
-                Connected waste sensors
+            <div class="stat-bottom">
+
+                <div class="stat-note">
+                    Connected waste sensors
+                </div>
+
+                <div class="stat-pulse"></div>
+
             </div>
 
         </div>
 
 
-        <div class="stat stat-critical">
+        <!-- CRITICAL BINS -->
+
+        <div class="stat futuristic-stat stat-critical">
+
+            <div class="stat-glow"></div>
+
+            <div class="stat-top">
+
+                <div class="stat-icon stat-icon-red">
+                    !
+                </div>
+
+                <div class="stat-trend trend-red">
+                    ⚠ ALERT
+                </div>
+
+            </div>
+
 
             <div class="stat-label">
                 Critical Bins
@@ -2894,14 +4782,37 @@
                 --
             </div>
 
-            <div class="stat-note">
-                Above 85% fill level
+            <div class="stat-bottom">
+
+                <div class="stat-note">
+                    Above 85% fill level
+                </div>
+
+                <div class="stat-pulse critical-pulse"></div>
+
             </div>
 
         </div>
 
 
-        <div class="stat">
+        <!-- NEED COLLECTION -->
+
+        <div class="stat futuristic-stat">
+
+            <div class="stat-glow"></div>
+
+            <div class="stat-top">
+
+                <div class="stat-icon stat-icon-blue">
+                    🚛
+                </div>
+
+                <div class="stat-trend trend-blue">
+                    ↑ ACTIVE
+                </div>
+
+            </div>
+
 
             <div class="stat-label">
                 Need Collection
@@ -2914,14 +4825,37 @@
                 --
             </div>
 
-            <div class="stat-note">
-                Active collection candidates
+            <div class="stat-bottom">
+
+                <div class="stat-note">
+                    Active collection candidates
+                </div>
+
+                <div class="stat-pulse blue-pulse"></div>
+
             </div>
 
         </div>
 
 
-        <div class="stat stat-risk">
+        <!-- OVERFLOW RISK -->
+
+        <div class="stat futuristic-stat stat-risk">
+
+            <div class="stat-glow"></div>
+
+            <div class="stat-top">
+
+                <div class="stat-icon stat-icon-purple">
+                    ◈
+                </div>
+
+                <div class="stat-trend trend-purple">
+                    AI PREDICT
+                </div>
+
+            </div>
+
 
             <div class="stat-label">
                 Overflow Risk
@@ -2934,15 +4868,19 @@
                 --
             </div>
 
-            <div class="stat-note">
-                Predicted risk cases
+            <div class="stat-bottom">
+
+                <div class="stat-note">
+                    Predicted risk cases
+                </div>
+
+                <div class="stat-pulse purple-pulse"></div>
+
             </div>
 
         </div>
 
-
     </section>
-
 
     <!-- ====================================================
          BIN NETWORK + SELECTED BIN
@@ -3274,7 +5212,7 @@
 
 
                 </div>
-
+ 
 
                 <!-- =================================================
                      COLLECTION
@@ -3525,120 +5463,130 @@
 
     <script>
 
-        const AUTH_USER_KEY = "smartWasteDemoUser";
-        const AUTH_SESSION_KEY = "smartWasteAuthSession";
+    /* =====================================================
+       REAL AUTHENTICATION
+       Connected to login.html + FastAPI
+    ===================================================== */
 
-        function setAuthMessage(id, message, type = "error") {
-            const element = document.getElementById(id);
-            if (!element) return;
-            element.textContent = message;
-            element.className = "auth-message " + type;
+    const AUTH_USER_KEY = "loggedInUser";
+
+
+    /* =====================================================
+       CHECK LOGIN
+    ===================================================== */
+
+    function initializeAuthentication() {
+
+        const authScreen =
+            document.getElementById("authScreen");
+
+        const loggedInUser =
+            localStorage.getItem(AUTH_USER_KEY);
+
+
+        /*
+         * If there is no logged-in user,
+         * send the user back to login.html.
+         */
+
+        if (!loggedInUser) {
+
+            window.location.href = "login.html";
+
+            return;
         }
 
-        function showSignup() {
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("signupForm").style.display = "block";
-            setAuthMessage("loginMessage", "");
-            setAuthMessage("signupMessage", "");
+
+        /*
+         * User is authenticated.
+         * Hide the old dashboard authentication screen.
+         */
+
+        if (authScreen) {
+
+            authScreen.style.display = "none";
+
         }
+        document.body.classList.remove("auth-checking");
 
-        function showLogin() {
-            document.getElementById("signupForm").style.display = "none";
-            document.getElementById("loginForm").style.display = "block";
-            setAuthMessage("loginMessage", "");
-            setAuthMessage("signupMessage", "");
-        }
+        document.body.style.overflow = "";
 
-        function togglePassword(inputId, button) {
-            const input = document.getElementById(inputId);
-            if (!input) return;
-            if (input.type === "password") {
-                input.type = "text";
-                button.textContent = "Hide";
-            } else {
-                input.type = "password";
-                button.textContent = "Show";
-            }
-        }
 
-        async function hashPassword(password) {
-            const data = new TextEncoder().encode(password);
-            const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-            return Array.from(new Uint8Array(hashBuffer)).map(byte => byte.toString(16).padStart(2, "0")).join("");
-        }
+        /*
+         * Display logged-in user's name if
+         * a dashboard user element exists.
+         */
 
-        async function signupUser() {
-            const name = document.getElementById("signupName").value.trim();
-            const email = document.getElementById("signupEmail").value.trim().toLowerCase();
-            const password = document.getElementById("signupPassword").value;
+        try {
 
-            if (!name || !email || !password) {
-                setAuthMessage("signupMessage", "Please complete all fields.");
-                return;
-            }
+            const user =
+                JSON.parse(loggedInUser);
 
-            if (password.length < 6) {
-                setAuthMessage("signupMessage", "Password must contain at least 6 characters.");
-                return;
-            }
+            const userName =
+                document.getElementById("userName");
 
-            const passwordHash = await hashPassword(password);
-            localStorage.setItem(AUTH_USER_KEY, JSON.stringify({ name, email, passwordHash }));
-            document.getElementById("loginEmail").value = email;
-            document.getElementById("loginPassword").value = "";
-            showLogin();
-            setAuthMessage("loginMessage", "Account created successfully. Please login.", "success");
-        }
+            const dropdownUserName =
+                document.getElementById("dropdownUserName");
 
-        async function loginUser() {
-            const email = document.getElementById("loginEmail").value.trim().toLowerCase();
-            const password = document.getElementById("loginPassword").value;
+            const dropdownUserEmail =
+                document.getElementById("dropdownUserEmail");
 
-            if (!email || !password) {
-                setAuthMessage("loginMessage", "Please enter your email and password.");
-                return;
-            }
 
-            const savedUser = localStorage.getItem(AUTH_USER_KEY);
-            if (!savedUser) {
-                setAuthMessage("loginMessage", "No account found. Please create an account first.");
-                return;
+            if (userName) {
+
+                userName.textContent =
+                    user.name || "User";
+
             }
 
-            try {
-                const user = JSON.parse(savedUser);
-                const passwordHash = await hashPassword(password);
 
-                if (user.email !== email || user.passwordHash !== passwordHash) {
-                    setAuthMessage("loginMessage", "Incorrect email or password.");
-                    return;
-                }
+            if (dropdownUserName) {
 
-                sessionStorage.setItem(AUTH_SESSION_KEY, "authenticated");
-                document.getElementById("authScreen").style.display = "none";
-                document.body.style.overflow = "";
-            } catch (error) {
-                console.error("Authentication error:", error);
-                setAuthMessage("loginMessage", "Unable to login. Please try again.");
+                dropdownUserName.textContent =
+                    user.name || "User";
+
             }
+
+
+            if (dropdownUserEmail) {
+
+                dropdownUserEmail.textContent =
+                    user.email || "—";
+
+            }
+
+            if (userName && user.name) {
+
+                userName.textContent =
+                    user.name;
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Unable to read logged-in user:",
+                error
+            );
+
+            localStorage.removeItem(
+                AUTH_USER_KEY
+            );
+
+            window.location.href =
+                "login.html";
         }
 
-        function initializeAuthentication() {
-            const authScreen = document.getElementById("authScreen");
-            if (!authScreen) return;
+    }
 
-            if (sessionStorage.getItem(AUTH_SESSION_KEY) === "authenticated") {
-                authScreen.style.display = "none";
-                document.body.style.overflow = "";
-            } else {
-                authScreen.style.display = "flex";
-                document.body.style.overflow = "hidden";
-            }
-        }
 
-        initializeAuthentication();
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
 
-    </script>
+    initializeAuthentication();
+
+</script>
 
 
 <script
@@ -3661,7 +5609,10 @@
 function logoutUser() {
 
     // Clear the current login session
-    sessionStorage.removeItem("smartWasteLoggedIn");
+    localStorage.removeItem("loggedInUser");
+
+    // Return to login page
+    window.location.href = "login.html";
 
     // Hide the dashboard
     document.querySelector("header").style.display = "none";

@@ -1,2 +1,5 @@
 fastapi
 uvicorn[standard]
+sqlalchemy
+pwdlib[argon2]
+email-validator

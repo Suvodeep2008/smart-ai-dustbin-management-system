@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,6 @@
 
     <link rel="icon" type="image/png" href="dustbin-favicon.png">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -33,13 +33,12 @@
             --green: #63ffb1;
             --green-bright: #8affca;
             --cyan: #48eaff;
-            --cyan-soft: #64f4ff;
 
             --white: #f2fffb;
             --muted: #91aaa3;
 
             --dark: #020708;
-            --panel: rgba(4, 20, 17, 0.68);
+            --panel: rgba(4, 20, 17, 0.72);
 
             --border: rgba(99, 255, 177, 0.28);
         }
@@ -52,15 +51,12 @@
 
         body {
             min-height: 100vh;
-
             overflow-x: hidden;
 
             font-family: "Inter", sans-serif;
-
             color: var(--white);
 
-            background:
-                #020708;
+            background: #020708;
         }
 
         button,
@@ -70,24 +66,22 @@
 
 
         /* =========================================================
-           CINEMATIC BACKGROUND
+           BACKGROUND
         ========================================================= */
 
         .background {
             position: fixed;
-
             inset: 0;
 
             overflow: hidden;
-
             pointer-events: none;
 
             z-index: 0;
 
             background:
                 linear-gradient(
-                   rgba(0, 15, 13, 0.35),
-                   rgba(0, 8, 10, 0.55)
+                    rgba(0, 15, 13, 0.35),
+                    rgba(0, 8, 10, 0.55)
                 ),
                 url("Gemini_Generated_Image_nkt866nkt866nkt8.png");
 
@@ -96,14 +90,8 @@
             background-repeat: no-repeat;
         }
 
-
-        /* =========================================================
-           SKY
-        ========================================================= */
-
         .sky {
             position: absolute;
-
             inset: 0;
 
             background:
@@ -119,14 +107,8 @@
                 );
         }
 
-
-        /* =========================================================
-           STARS
-        ========================================================= */
-
         .stars {
             position: absolute;
-
             inset: 0;
 
             background-image:
@@ -139,22 +121,15 @@
                     circle,
                     rgba(100,255,221,0.7) 1px,
                     transparent 1.5px
-                ),
-                radial-gradient(
-                    circle,
-                    rgba(255,255,255,0.55) 1px,
-                    transparent 1.5px
                 );
 
             background-size:
                 125px 125px,
-                210px 210px,
-                320px 320px;
+                210px 210px;
 
             background-position:
                 15px 30px,
-                80px 100px,
-                150px 20px;
+                80px 100px;
 
             opacity: 0.48;
 
@@ -162,7 +137,6 @@
         }
 
         @keyframes starDrift {
-
             from {
                 transform: translateY(0);
             }
@@ -174,7 +148,7 @@
 
 
         /* =========================================================
-           DISTANT FUTURISTIC CITY
+           CITY
         ========================================================= */
 
         .city {
@@ -187,9 +161,7 @@
             height: 31%;
 
             display: flex;
-
             justify-content: center;
-
             align-items: flex-end;
 
             gap: 9px;
@@ -209,8 +181,7 @@
                     rgba(2, 17, 20, 0.99)
                 );
 
-            border:
-                1px solid rgba(73, 237, 222, 0.12);
+            border: 1px solid rgba(73, 237, 222, 0.12);
 
             box-shadow:
                 inset 0 0 35px rgba(65, 255, 220, 0.035);
@@ -220,7 +191,6 @@
             content: "";
 
             position: absolute;
-
             inset: 10px 7px;
 
             background-image:
@@ -237,31 +207,8 @@
                     transparent 72%
                 );
 
-            background-size:
-                15px 18px;
-
+            background-size: 15px 18px;
             opacity: 0.55;
-        }
-
-        .building::after {
-            content: "";
-
-            position: absolute;
-
-            left: 50%;
-
-            top: 0;
-
-            width: 1px;
-
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    transparent,
-                    rgba(78,255,219,0.18),
-                    transparent
-                );
         }
 
         .building:nth-child(1) {
@@ -306,7 +253,7 @@
 
 
         /* =========================================================
-           FUTURISTIC DOMES
+           DOMES
         ========================================================= */
 
         .dome {
@@ -317,11 +264,9 @@
             width: 170px;
             height: 88px;
 
-            border-radius:
-                170px 170px 0 0;
+            border-radius: 170px 170px 0 0;
 
-            border:
-                1px solid rgba(84,255,221,0.34);
+            border: 1px solid rgba(84,255,221,0.34);
 
             background:
                 radial-gradient(
@@ -346,27 +291,7 @@
             width: 1px;
             height: 100%;
 
-            background:
-                rgba(97,255,225,0.24);
-        }
-
-        .dome::after {
-            content: "";
-
-            position: absolute;
-
-            left: 15%;
-            right: 15%;
-            bottom: 0;
-
-            height: 1px;
-
-            background:
-                rgba(97,255,225,0.24);
-
-            box-shadow:
-                0 -25px 0 rgba(97,255,225,0.12),
-                0 -50px 0 rgba(97,255,225,0.08);
+            background: rgba(97,255,225,0.24);
         }
 
         .dome-left {
@@ -375,7 +300,6 @@
 
         .dome-right {
             right: 6%;
-
             transform: scale(1.25);
         }
 
@@ -401,8 +325,7 @@
                     rgba(4,26,22,0.99)
                 );
 
-            border:
-                1px solid rgba(92,255,199,0.3);
+            border: 1px solid rgba(92,255,199,0.3);
 
             box-shadow:
                 0 0 30px rgba(66,255,192,0.11);
@@ -416,11 +339,9 @@
             left: 50%;
             top: 50%;
 
-            transform:
-                translate(-50%, -50%);
+            transform: translate(-50%, -50%);
 
-            color:
-                rgba(92,255,199,0.68);
+            color: rgba(92,255,199,0.68);
 
             font-size: 18px;
         }
@@ -437,11 +358,9 @@
 
             height: 8px;
 
-            border-radius:
-                5px 5px 2px 2px;
+            border-radius: 5px 5px 2px 2px;
 
-            background:
-                rgba(76,255,194,0.55);
+            background: rgba(76,255,194,0.55);
 
             box-shadow:
                 0 0 14px rgba(76,255,194,0.3);
@@ -453,13 +372,12 @@
 
         .bin-right {
             right: 12%;
-
             transform: scale(0.8);
         }
 
 
         /* =========================================================
-           FUTURISTIC ROAD
+           ROAD
         ========================================================= */
 
         .road {
@@ -488,9 +406,6 @@
 
             border-top:
                 1px solid rgba(67,255,214,0.12);
-
-            box-shadow:
-                0 -20px 70px rgba(46,255,206,0.06);
         }
 
         .road::before {
@@ -504,8 +419,7 @@
             width: 2px;
             height: 140%;
 
-            transform:
-                translateX(-50%);
+            transform: translateX(-50%);
 
             background:
                 repeating-linear-gradient(
@@ -520,61 +434,7 @@
 
 
         /* =========================================================
-           REFLECTIVE GROUND
-        ========================================================= */
-
-        .reflection {
-            position: absolute;
-
-            left: 0;
-            right: 0;
-            bottom: 0;
-
-            height: 24%;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    transparent,
-                    rgba(20,132,118,0.14)
-                );
-
-            opacity: 0.9;
-        }
-
-        .reflection::before {
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                repeating-linear-gradient(
-                    90deg,
-                    transparent 0 45px,
-                    rgba(91,255,218,0.055) 46px,
-                    transparent 48px 90px
-                );
-
-            animation:
-                reflectionMove 8s linear infinite;
-        }
-
-        @keyframes reflectionMove {
-
-            from {
-                transform: translateX(0);
-            }
-
-            to {
-                transform: translateX(90px);
-            }
-        }
-
-
-        /* =========================================================
-           ATMOSPHERIC LIGHT
+           LIGHTING
         ========================================================= */
 
         .light-beam {
@@ -634,127 +494,6 @@
 
 
         /* =========================================================
-           FLOATING PARTICLES
-        ========================================================= */
-
-        .particle {
-            position: absolute;
-
-            width: 3px;
-            height: 3px;
-
-            border-radius: 50%;
-
-            background:
-                #6dffcf;
-
-            box-shadow:
-                0 0 12px #6dffcf;
-
-            opacity: 0;
-
-            animation:
-                particleFloat linear infinite;
-        }
-
-        .particle:nth-child(1) {
-            left: 8%;
-            top: 70%;
-            animation-duration: 9s;
-        }
-
-        .particle:nth-child(2) {
-            left: 18%;
-            top: 45%;
-            animation-duration: 12s;
-        }
-
-        .particle:nth-child(3) {
-            left: 30%;
-            top: 80%;
-            animation-duration: 10s;
-        }
-
-        .particle:nth-child(4) {
-            left: 44%;
-            top: 25%;
-            animation-duration: 13s;
-        }
-
-        .particle:nth-child(5) {
-            left: 62%;
-            top: 70%;
-            animation-duration: 11s;
-        }
-
-        .particle:nth-child(6) {
-            left: 74%;
-            top: 38%;
-            animation-duration: 14s;
-        }
-
-        .particle:nth-child(7) {
-            left: 88%;
-            top: 65%;
-            animation-duration: 10s;
-        }
-
-        .particle:nth-child(8) {
-            left: 95%;
-            top: 20%;
-            animation-duration: 12s;
-        }
-
-        @keyframes particleFloat {
-
-            0% {
-                transform:
-                    translate3d(0,40px,0)
-                    scale(0.4);
-
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 0.8;
-            }
-
-            80% {
-                opacity: 0.8;
-            }
-
-            100% {
-                transform:
-                    translate3d(30px,-130px,0)
-                    scale(1);
-
-                opacity: 0;
-            }
-        }
-
-
-        /* =========================================================
-           VIGNETTE
-        ========================================================= */
-
-        .background::after {
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                radial-gradient(
-                    ellipse at center,
-                    transparent 25%,
-                    rgba(0,5,7,0.22) 60%,
-                    rgba(0,3,5,0.78) 100%
-                );
-        }
-
-
-        /* =========================================================
            PAGE
         ========================================================= */
 
@@ -766,18 +505,11 @@
             min-height: 100vh;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
-            padding:
-                35px 20px;
+            padding: 35px 20px;
         }
-
-
-        /* =========================================================
-           AUTH CONTAINER
-        ========================================================= */
 
         .auth-container {
             width: min(450px, 100%);
@@ -812,21 +544,16 @@
 
         .brand {
             text-align: center;
-
             margin-bottom: 25px;
         }
 
         .logo {
-            position: relative;
-
             width: 70px;
             height: 70px;
 
-            margin:
-                0 auto 17px;
+            margin: 0 auto 17px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -846,68 +573,15 @@
             box-shadow:
                 0 0 30px rgba(99,255,177,0.3),
                 0 18px 55px rgba(0,0,0,0.4);
-
-            animation:
-                logoFloat 4s ease-in-out infinite;
-        }
-
-        .logo::before {
-            content: "";
-
-            position: absolute;
-
-            inset: -6px;
-
-            border-radius: 25px;
-
-            border:
-                1px solid rgba(99,255,177,0.4);
-
-            box-shadow:
-                0 0 25px rgba(99,255,177,0.12);
-
-            animation:
-                logoPulse 2.6s ease-in-out infinite;
-        }
-
-        @keyframes logoFloat {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-
-        @keyframes logoPulse {
-
-            0%,
-            100% {
-                opacity: 0.3;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.8;
-                transform: scale(1.08);
-            }
         }
 
         .brand h1 {
-            font-family:
-                "Space Grotesk",
-                sans-serif;
+            font-family: "Space Grotesk", sans-serif;
 
-            font-size:
-                clamp(29px, 6vw, 37px);
-
+            font-size: 31px;
             font-weight: 700;
 
-            letter-spacing:
-                -0.045em;
+            letter-spacing: -0.03em;
         }
 
         .brand h1 span {
@@ -920,113 +594,57 @@
             color: var(--muted);
 
             font-size: 10px;
-
-            letter-spacing:
-                0.05em;
+            letter-spacing: 0.05em;
         }
 
 
         /* =========================================================
-           GLASS LOGIN PANEL
+           CARD
         ========================================================= */
 
         .card {
             position: relative;
 
-            padding: 34px;
+            padding: 32px;
 
-            border-radius: 26px;
+            border-radius: 24px;
 
             background:
                 linear-gradient(
                     145deg,
-                    rgba(10,37,31,0.78),
-                    rgba(2,15,13,0.72)
+                    rgba(6,30,25,0.82),
+                    rgba(2,14,15,0.82)
                 );
 
             border:
-                1px solid rgba(99,255,177,0.28);
+                1px solid var(--border);
 
-            backdrop-filter:
-                blur(25px);
-
-            -webkit-backdrop-filter:
-                blur(25px);
+            backdrop-filter: blur(20px);
 
             box-shadow:
-                0 35px 100px rgba(0,0,0,0.58),
-                0 0 70px rgba(99,255,177,0.07),
-                inset 0 1px 0 rgba(255,255,255,0.06);
-
-            overflow: hidden;
+                0 30px 80px rgba(0,0,0,0.42),
+                inset 0 1px 0 rgba(255,255,255,0.04);
         }
-
-        .card::before {
-            content: "";
-
-            position: absolute;
-
-            width: 240px;
-            height: 240px;
-
-            top: -150px;
-            right: -120px;
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(99,255,177,0.18),
-                    transparent 70%
-                );
-        }
-
-        .card::after {
-            content: "";
-
-            position: absolute;
-
-            width: 180px;
-            height: 180px;
-
-            bottom: -120px;
-            left: -90px;
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(71,234,255,0.14),
-                    transparent 70%
-                );
-        }
-
-
-        /* =========================================================
-           CARD TOP LIGHT
-        ========================================================= */
 
         .card-top-line {
             position: absolute;
 
-            top: 0;
-            left: 15%;
+            left: 18%;
+            right: 18%;
+            top: -1px;
 
-            width: 70%;
-            height: 1px;
+            height: 2px;
 
             background:
                 linear-gradient(
                     90deg,
                     transparent,
-                    rgba(99,255,177,0.7),
+                    var(--green),
                     transparent
                 );
 
             box-shadow:
-                0 0 15px rgba(99,255,177,0.35);
+                0 0 18px var(--green);
         }
 
 
@@ -1035,30 +653,22 @@
         ========================================================= */
 
         .heading {
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
-        .heading .status {
-            display: inline-flex;
-
+        .status {
+            display: flex;
             align-items: center;
-
             gap: 7px;
-
-            margin-bottom: 12px;
 
             color: var(--green);
 
-            font-family:
-                "Space Grotesk",
-                sans-serif;
+            font-size: 8px;
+            font-weight: 600;
 
-            font-size: 9px;
+            letter-spacing: 0.12em;
 
-            text-transform: uppercase;
-
-            letter-spacing:
-                0.13em;
+            margin-bottom: 12px;
         }
 
         .status-dot {
@@ -1067,41 +677,17 @@
 
             border-radius: 50%;
 
-            background:
-                var(--green);
+            background: var(--green);
 
             box-shadow:
                 0 0 10px var(--green);
-
-            animation:
-                statusPulse 1.8s infinite;
-        }
-
-        @keyframes statusPulse {
-
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.35;
-                transform: scale(0.75);
-            }
         }
 
         .heading h2 {
-            font-family:
-                "Space Grotesk",
-                sans-serif;
+            font-family: "Space Grotesk", sans-serif;
 
-            font-size: 27px;
-
+            font-size: 26px;
             font-weight: 600;
-
-            letter-spacing:
-                -0.035em;
         }
 
         .heading p {
@@ -1110,17 +696,16 @@
             color: var(--muted);
 
             font-size: 10px;
-
             line-height: 1.6;
         }
 
 
         /* =========================================================
-           FORM FIELDS
+           INPUT FIELDS
         ========================================================= */
 
         .field {
-            margin-bottom: 16px;
+            margin-bottom: 15px;
         }
 
         .field label {
@@ -1128,16 +713,13 @@
 
             margin-bottom: 7px;
 
-            color: #b6ccc5;
+            color: #9bb4ad;
 
             font-size: 9px;
-
             font-weight: 600;
 
             text-transform: uppercase;
-
-            letter-spacing:
-                0.09em;
+            letter-spacing: 0.08em;
         }
 
         .input-wrapper {
@@ -1147,76 +729,54 @@
         .input-icon {
             position: absolute;
 
-            left: 15px;
+            left: 14px;
             top: 50%;
 
-            transform:
-                translateY(-50%);
+            transform: translateY(-50%);
 
-            color:
-                var(--green);
+            color: var(--green);
 
             font-size: 13px;
 
             z-index: 2;
-
-            pointer-events: none;
         }
 
-        .field input {
+        .input-wrapper input {
             width: 100%;
-
-            height: 51px;
+            height: 48px;
 
             padding:
-                0 45px;
+                0 45px 0 42px;
 
             border-radius: 12px;
 
             border:
-                1px solid rgba(255,255,255,0.10);
+                1px solid rgba(99,255,177,0.13);
 
             outline: none;
 
             background:
-                rgba(1,11,9,0.62);
+                rgba(0,0,0,0.23);
 
-            color:
-                var(--white);
+            color: var(--white);
 
             font-size: 11px;
 
-            transition:
-                border 0.25s ease,
-                box-shadow 0.25s ease,
-                background 0.25s ease,
-                transform 0.25s ease;
+            transition: 0.25s ease;
         }
 
-        .field input::placeholder {
-            color:
-                #607770;
+        .input-wrapper input::placeholder {
+            color: #536b65;
         }
 
-        .field input:focus {
+        .input-wrapper input:focus {
             border-color:
-                rgba(99,255,177,0.7);
-
-            background:
-                rgba(4,22,17,0.85);
+                rgba(99,255,177,0.55);
 
             box-shadow:
                 0 0 0 3px rgba(99,255,177,0.06),
-                0 0 28px rgba(99,255,177,0.06);
-
-            transform:
-                translateY(-1px);
+                0 0 20px rgba(99,255,177,0.07);
         }
-
-
-        /* =========================================================
-           PASSWORD TOGGLE
-        ========================================================= */
 
         .password-toggle {
             position: absolute;
@@ -1224,31 +784,17 @@
             right: 10px;
             top: 50%;
 
-            transform:
-                translateY(-50%);
+            transform: translateY(-50%);
 
             border: none;
-
             background: transparent;
 
-            color:
-                var(--muted);
-
-            cursor: pointer;
+            color: var(--green);
 
             font-size: 8px;
+            font-weight: 700;
 
-            font-weight: 600;
-
-            letter-spacing:
-                0.05em;
-
-            padding: 6px;
-        }
-
-        .password-toggle:hover {
-            color:
-                var(--green);
+            cursor: pointer;
         }
 
 
@@ -1259,53 +805,38 @@
         .options {
             display: flex;
 
-            justify-content:
-                space-between;
+            align-items: center;
+            justify-content: space-between;
 
-            align-items:
-                center;
-
-            margin-top: 3px;
-
-            margin-bottom: 20px;
-
-            font-size: 9px;
+            margin: 6px 0 18px;
         }
 
         .remember {
             display: flex;
 
             align-items: center;
-
             gap: 7px;
 
-            color:
-                var(--muted);
+            color: var(--muted);
+
+            font-size: 9px;
 
             cursor: pointer;
         }
 
         .remember input {
-            width: 12px;
-            height: 12px;
-
-            accent-color:
-                var(--green);
-
-            cursor: pointer;
+            accent-color: var(--green);
         }
 
         .forgot {
             border: none;
-
             background: transparent;
 
-            color:
-                var(--green);
-
-            cursor: pointer;
+            color: var(--green);
 
             font-size: 9px;
+
+            cursor: pointer;
         }
 
         .forgot:hover {
@@ -1314,100 +845,54 @@
 
 
         /* =========================================================
-           SIGN IN BUTTON
+           LOGIN BUTTON
         ========================================================= */
 
         .login-button {
-            position: relative;
-
             width: 100%;
-            height: 51px;
+            height: 49px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
 
             border: none;
-
             border-radius: 12px;
-
-            cursor: pointer;
-
-            overflow: hidden;
 
             background:
                 linear-gradient(
-                    110deg,
-                    #7dffc5,
-                    #35dda0,
-                    #63ffb1,
-                    #35d9df
+                    135deg,
+                    #8affca,
+                    #32d99b
                 );
 
-            background-size:
-                250% 100%;
+            color: #03120d;
 
-            color:
-                #03130d;
+            font-size: 10px;
+            font-weight: 800;
 
-            font-family:
-                "Space Grotesk",
-                sans-serif;
+            letter-spacing: 0.08em;
 
-            font-size: 11px;
+            cursor: pointer;
 
-            font-weight: 700;
-
-            letter-spacing:
-                0.05em;
+            transition: 0.25s ease;
 
             box-shadow:
-                0 12px 35px rgba(99,255,177,0.19);
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-
-            animation:
-                buttonGradient 5s linear infinite;
-        }
-
-        @keyframes buttonGradient {
-
-            0% {
-                background-position:
-                    0% 50%;
-            }
-
-            100% {
-                background-position:
-                    250% 50%;
-            }
+                0 12px 28px rgba(50,217,155,0.18);
         }
 
         .login-button:hover {
-            transform:
-                translateY(-2px);
+            transform: translateY(-2px);
 
             box-shadow:
-                0 17px 45px rgba(99,255,177,0.30);
-        }
-
-        .login-button:active {
-            transform:
-                translateY(0);
+                0 16px 35px rgba(50,217,155,0.28);
         }
 
         .button-arrow {
-            position: absolute;
-
-            right: 17px;
-
-            font-size: 18px;
-
-            transition:
-                transform 0.2s ease;
-        }
-
-        .login-button:hover .button-arrow {
-            transform:
-                translateX(5px);
+            font-size: 17px;
         }
 
 
@@ -1422,8 +907,7 @@
 
             gap: 12px;
 
-            margin:
-                22px 0;
+            margin: 22px 0;
         }
 
         .divider::before,
@@ -1439,32 +923,27 @@
         }
 
         .divider span {
-            color:
-                #637b74;
+            color: #637b74;
 
             font-size: 8px;
 
-            text-transform:
-                uppercase;
+            text-transform: uppercase;
 
-            letter-spacing:
-                0.12em;
+            letter-spacing: 0.12em;
         }
 
 
         /* =========================================================
-           GOOGLE BUTTON
+           GOOGLE
         ========================================================= */
 
         .google-button {
             width: 100%;
-
             height: 48px;
 
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             gap: 11px;
@@ -1477,17 +956,14 @@
             background:
                 rgba(255,255,255,0.045);
 
-            color:
-                var(--white);
+            color: var(--white);
 
             cursor: pointer;
 
             font-size: 10px;
-
             font-weight: 500;
 
-            transition:
-                0.25s ease;
+            transition: 0.25s ease;
         }
 
         .google-button:hover {
@@ -1499,9 +975,6 @@
 
             transform:
                 translateY(-1px);
-
-            box-shadow:
-                0 10px 25px rgba(0,0,0,0.18);
         }
 
         .google-icon {
@@ -1515,23 +988,17 @@
             align-items: center;
             justify-content: center;
 
-            background:
-                white;
+            background: white;
 
-            color:
-                #4285f4;
-
-            font-family:
-                Arial, sans-serif;
+            color: #4285f4;
 
             font-size: 12px;
-
             font-weight: 700;
         }
 
 
         /* =========================================================
-           SIGN UP
+           SIGNUP LINK
         ========================================================= */
 
         .signup {
@@ -1539,8 +1006,7 @@
 
             text-align: center;
 
-            color:
-                var(--muted);
+            color: var(--muted);
 
             font-size: 9px;
         }
@@ -1550,8 +1016,7 @@
 
             background: transparent;
 
-            color:
-                var(--green);
+            color: var(--green);
 
             font-weight: 600;
 
@@ -1561,8 +1026,7 @@
         }
 
         .signup button:hover {
-            text-decoration:
-                underline;
+            text-decoration: underline;
         }
 
 
@@ -1579,8 +1043,7 @@
 
             margin-top: 19px;
 
-            color:
-                #60766f;
+            color: #60766f;
 
             font-family:
                 "Space Grotesk",
@@ -1588,11 +1051,9 @@
 
             font-size: 7px;
 
-            text-transform:
-                uppercase;
+            text-transform: uppercase;
 
-            letter-spacing:
-                0.10em;
+            letter-spacing: 0.10em;
         }
 
         .system-status span {
@@ -1609,8 +1070,7 @@
 
             border-radius: 50%;
 
-            background:
-                var(--green);
+            background: var(--green);
 
             box-shadow:
                 0 0 8px var(--green);
@@ -1624,11 +1084,9 @@
         .footer {
             margin-top: 20px;
 
-            text-align:
-                center;
+            text-align: center;
 
-            color:
-                #405650;
+            color: #405650;
 
             font-family:
                 "Space Grotesk",
@@ -1636,8 +1094,201 @@
 
             font-size: 7px;
 
-            letter-spacing:
-                0.06em;
+            letter-spacing: 0.06em;
+        }
+
+
+        /* =========================================================
+           SIGNUP MODAL
+        ========================================================= */
+
+        .signup-modal {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 100;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(0, 5, 7, 0.78);
+
+            backdrop-filter: blur(10px);
+        }
+
+        .signup-modal.active {
+            display: flex;
+        }
+
+        .signup-box {
+            position: relative;
+
+            width: min(430px, 100%);
+
+            padding: 32px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(6,30,25,0.97),
+                    rgba(2,14,15,0.98)
+                );
+
+            border:
+                1px solid rgba(99,255,177,0.35);
+
+            box-shadow:
+                0 30px 90px rgba(0,0,0,0.65),
+                0 0 45px rgba(99,255,177,0.08);
+
+            animation:
+                signupAppear 0.3s ease;
+        }
+
+        @keyframes signupAppear {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(20px)
+                    scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+        .signup-box h2 {
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size: 26px;
+
+            margin-bottom: 7px;
+        }
+
+        .signup-box > p {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-bottom: 22px;
+        }
+
+        .close-signup {
+            position: absolute;
+
+            top: 14px;
+            right: 16px;
+
+            width: 30px;
+            height: 30px;
+
+            border: none;
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: var(--white);
+
+            font-size: 20px;
+
+            cursor: pointer;
+        }
+
+        .close-signup:hover {
+            background:
+                rgba(99,255,177,0.12);
+
+            color: var(--green);
+        }
+
+        .signup-box input {
+            width: 100%;
+            height: 48px;
+
+            margin-bottom: 13px;
+
+            padding: 0 15px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid rgba(99,255,177,0.14);
+
+            outline: none;
+
+            background:
+                rgba(0,0,0,0.25);
+
+            color: var(--white);
+
+            font-size: 11px;
+        }
+
+        .signup-box input::placeholder {
+            color: #536b65;
+        }
+
+        .signup-box input:focus {
+            border-color:
+                rgba(99,255,177,0.55);
+
+            box-shadow:
+                0 0 0 3px rgba(99,255,177,0.05);
+        }
+
+        .signup-submit {
+            width: 100%;
+
+            height: 49px;
+
+            margin-top: 5px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8affca,
+                    #32d99b
+                );
+
+            color: #03120d;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.08em;
+
+            cursor: pointer;
+
+            transition: 0.25s ease;
+        }
+
+        .signup-submit:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 12px 30px rgba(50,217,155,0.22);
         }
 
 
@@ -1669,30 +1320,19 @@
             }
         }
 
-
         @media (max-width: 520px) {
 
             .page {
-                padding:
-                    25px 14px;
+                padding: 25px 14px;
             }
 
             .card {
-                padding:
-                    27px 20px;
-
-                border-radius:
-                    21px;
-            }
-
-            .brand {
-                margin-bottom:
-                    20px;
+                padding: 27px 20px;
+                border-radius: 21px;
             }
 
             .brand h1 {
-                font-size:
-                    28px;
+                font-size: 28px;
             }
 
             .logo {
@@ -1703,83 +1343,24 @@
             }
 
             .heading h2 {
-                font-size:
-                    24px;
+                font-size: 24px;
             }
 
             .city {
-                opacity:
-                    0.35;
+                opacity: 0.35;
             }
 
             .dome {
-                opacity:
-                    0.25;
+                opacity: 0.25;
             }
 
             .system-status {
                 gap: 11px;
-
-                flex-wrap:
-                    wrap;
-            }
-        }
-
-
-        @media (max-height: 720px) {
-
-            .page {
-                padding-top:
-                    15px;
-
-                padding-bottom:
-                    15px;
+                flex-wrap: wrap;
             }
 
-            .brand {
-                margin-bottom:
-                    13px;
-            }
-
-            .logo {
-                width: 55px;
-                height: 55px;
-
-                margin-bottom:
-                    10px;
-
-                font-size:
-                    25px;
-            }
-
-            .card {
-                padding:
-                    24px 27px;
-            }
-
-            .heading {
-                margin-bottom:
-                    17px;
-            }
-
-            .field {
-                margin-bottom:
-                    11px;
-            }
-
-            .options {
-                margin-bottom:
-                    13px;
-            }
-
-            .divider {
-                margin:
-                    15px 0;
-            }
-
-            .signup {
-                margin-top:
-                    15px;
+            .signup-box {
+                padding: 27px 20px;
             }
         }
 
@@ -1789,8 +1370,9 @@
 
 <body>
 
+
     <!-- =========================================================
-         CINEMATIC BACKGROUND
+         BACKGROUND
     ========================================================= -->
 
     <div class="background">
@@ -1799,8 +1381,6 @@
 
         <div class="stars"></div>
 
-
-        <!-- Distant futuristic city -->
 
         <div class="city">
 
@@ -1818,47 +1398,22 @@
         </div>
 
 
-        <!-- Futuristic environmental structures -->
-
         <div class="dome dome-left"></div>
 
         <div class="dome dome-right"></div>
 
-
-        <!-- Smart waste bins -->
 
         <div class="smart-bin bin-left"></div>
 
         <div class="smart-bin bin-right"></div>
 
 
-        <!-- Futuristic road -->
-
         <div class="road"></div>
 
-
-        <!-- Ground reflection -->
-
-        <div class="reflection"></div>
-
-
-        <!-- Atmospheric lighting -->
 
         <div class="light-beam light-one"></div>
 
         <div class="light-beam light-two"></div>
-
-
-        <!-- Floating particles -->
-
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
 
     </div>
 
@@ -1872,9 +1427,7 @@
         <section class="auth-container">
 
 
-            <!-- =================================================
-                 BRAND
-            ================================================= -->
+            <!-- BRAND -->
 
             <div class="brand">
 
@@ -1893,16 +1446,14 @@
             </div>
 
 
-            <!-- =================================================
-                 LOGIN CARD
-            ================================================= -->
+            <!-- LOGIN CARD -->
 
             <div class="card">
 
                 <div class="card-top-line"></div>
 
 
-                <!-- Heading -->
+                <!-- HEADING -->
 
                 <div class="heading">
 
@@ -1926,9 +1477,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     EMAIL
-                ================================================= -->
+                <!-- EMAIL -->
 
                 <div class="field">
 
@@ -1954,9 +1503,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     PASSWORD
-                ================================================= -->
+                <!-- PASSWORD -->
 
                 <div class="field">
 
@@ -1991,9 +1538,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     OPTIONS
-                ================================================= -->
+                <!-- OPTIONS -->
 
                 <div class="options">
 
@@ -2020,9 +1565,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     SIGN IN
-                ================================================= -->
+                <!-- SIGN IN -->
 
                 <button
                     type="button"
@@ -2039,9 +1582,7 @@
                 </button>
 
 
-                <!-- =================================================
-                     DIVIDER
-                ================================================= -->
+                <!-- DIVIDER -->
 
                 <div class="divider">
 
@@ -2052,9 +1593,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     GOOGLE
-                ================================================= -->
+                <!-- GOOGLE -->
 
                 <button
                     type="button"
@@ -2071,9 +1610,7 @@
                 </button>
 
 
-                <!-- =================================================
-                     CREATE ACCOUNT
-                ================================================= -->
+                <!-- CREATE ACCOUNT -->
 
                 <div class="signup">
 
@@ -2091,9 +1628,7 @@
             </div>
 
 
-            <!-- =================================================
-                 SYSTEM STATUS
-            ================================================= -->
+            <!-- SYSTEM STATUS -->
 
             <div class="system-status">
 
@@ -2115,9 +1650,7 @@
             </div>
 
 
-            <!-- =================================================
-                 FOOTER
-            ================================================= -->
+            <!-- FOOTER -->
 
             <div class="footer">
 
@@ -2131,14 +1664,95 @@
 
 
     <!-- =========================================================
-         TEMPORARY JAVASCRIPT
-         
-         IMPORTANT:
-         This is UI-only for now.
-         Real authentication will be connected later.
+         SIGNUP MODAL
+    ========================================================= -->
+
+    <div
+        id="signupModal"
+        class="signup-modal"
+    >
+
+        <div class="signup-box">
+
+            <button
+                type="button"
+                class="close-signup"
+                onclick="closeSignup()"
+            >
+                ×
+            </button>
+
+
+            <h2>
+                Create Account
+            </h2>
+
+            <p>
+                Join Smart AI Waste Management System
+            </p>
+
+
+            <!-- NAME -->
+
+            <input
+                type="text"
+                id="signupName"
+                placeholder="Full Name"
+                autocomplete="name"
+            >
+
+
+            <!-- EMAIL -->
+
+            <input
+                type="email"
+                id="signupEmail"
+                placeholder="Email Address"
+                autocomplete="email"
+            >
+
+
+            <!-- PASSWORD -->
+
+            <input
+                type="password"
+                id="signupPassword"
+                placeholder="Password"
+                autocomplete="new-password"
+            >
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <input
+                type="password"
+                id="signupConfirmPassword"
+                placeholder="Confirm Password"
+                autocomplete="new-password"
+            >
+
+
+            <!-- CREATE ACCOUNT -->
+
+            <button
+                type="button"
+                class="signup-submit"
+                onclick="registerUser()"
+            >
+                CREATE ACCOUNT
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
     ========================================================= -->
 
     <script>
+
 
         /* =====================================================
            PASSWORD VISIBILITY
@@ -2172,9 +1786,10 @@
 
         /* =====================================================
            LOGIN
+           CONNECTED TO FASTAPI
         ===================================================== */
 
-        function login() {
+        async function login() {
 
             const email =
                 document
@@ -2208,39 +1823,72 @@
             }
 
 
-            /*
-             * TEMPORARY
-             *
-             * Real authentication will be connected to:
-             *
-             * FastAPI
-             * PostgreSQL
-             * Secure password hashing
-             * Session/JWT authentication
-             */
+            try {
 
-            alert(
-                "Authentication will be connected in the next step."
-            );
+                const response =
+                    await fetch(
+                        "http://127.0.0.1:8000/auth/login",
+                        {
+                            method: "POST",
 
-        }
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    email: email,
+                                    password: password
+                                })
+                        }
+                    );
 
 
-        /* =====================================================
-           GOOGLE LOGIN
-        ===================================================== */
+                const data =
+                    await response.json();
 
-        function googleLogin() {
 
-            /*
-             * TEMPORARY
-             *
-             * Google OAuth will be connected later.
-             */
+                if (!response.ok) {
 
-            alert(
-                "Google Login will be connected in the authentication setup."
-            );
+                    alert(
+                        data.detail ||
+                        "Invalid email or password."
+                    );
+
+                    return;
+                }
+
+
+                /* Save logged-in user */
+
+                localStorage.setItem(
+                    "loggedInUser",
+                    JSON.stringify(data.user)
+                );
+
+
+                alert(
+                    "Login successful!"
+                );
+
+
+                /* Open dashboard */
+
+                window.location.href =
+                    "index.html";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Unable to connect to the backend. " +
+                    "Make sure FastAPI is running."
+                );
+
+            }
 
         }
 
@@ -2251,8 +1899,229 @@
 
         function createAccount() {
 
+            document
+                .getElementById("signupModal")
+                .classList.add("active");
+
+        }
+
+
+        /* =====================================================
+           CLOSE SIGNUP
+        ===================================================== */
+
+        function closeSignup() {
+
+            document
+                .getElementById("signupModal")
+                .classList.remove("active");
+
+        }
+
+
+        /* =====================================================
+           REGISTER USER
+           CONNECTED TO FASTAPI
+        ===================================================== */
+
+        async function registerUser() {
+
+            const name =
+                document
+                    .getElementById("signupName")
+                    .value
+                    .trim();
+
+            const email =
+                document
+                    .getElementById("signupEmail")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("signupPassword")
+                    .value;
+
+            const confirmPassword =
+                document
+                    .getElementById("signupConfirmPassword")
+                    .value;
+
+
+            /* ===============================
+               VALIDATION
+            =============================== */
+
+            if (!name) {
+
+                alert(
+                    "Please enter your full name."
+                );
+
+                return;
+            }
+
+
+            if (!email) {
+
+                alert(
+                    "Please enter your email address."
+                );
+
+                return;
+            }
+
+
+            if (!password) {
+
+                alert(
+                    "Please create a password."
+                );
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+
+                alert(
+                    "Password must be at least 6 characters."
+                );
+
+                return;
+            }
+
+
+            if (!confirmPassword) {
+
+                alert(
+                    "Please confirm your password."
+                );
+
+                return;
+            }
+
+
+            if (password !== confirmPassword) {
+
+                alert(
+                    "Passwords do not match."
+                );
+
+                return;
+            }
+
+
+            /* ===============================
+               SEND DATA TO FASTAPI
+            =============================== */
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://127.0.0.1:8000/auth/register",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    name: name,
+                                    email: email,
+                                    password: password
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                /* ===============================
+                   ERROR
+                =============================== */
+
+                if (!response.ok) {
+
+                    alert(
+                        data.detail ||
+                        "Registration failed."
+                    );
+
+                    return;
+                }
+
+
+                /* ===============================
+                   SUCCESS
+                =============================== */
+
+                alert(
+                    "Account created successfully! " +
+                    "You can now log in."
+                );
+
+
+                /* Close signup modal */
+
+                closeSignup();
+
+
+                /* Put registered email in login */
+
+                document
+                    .getElementById("email")
+                    .value = email;
+
+
+                /* Clear signup fields */
+
+                document
+                    .getElementById("signupName")
+                    .value = "";
+
+                document
+                    .getElementById("signupEmail")
+                    .value = "";
+
+                document
+                    .getElementById("signupPassword")
+                    .value = "";
+
+                document
+                    .getElementById("signupConfirmPassword")
+                    .value = "";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Unable to connect to the backend. " +
+                    "Make sure FastAPI is running."
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           GOOGLE LOGIN
+        ===================================================== */
+
+        function googleLogin() {
+
             alert(
-                "Registration will be connected in the next authentication step."
+                "Google Login will be connected later."
             );
 
         }
@@ -2265,12 +2134,56 @@
         function forgotPassword() {
 
             alert(
-                "Password recovery will be connected after the database authentication system is ready."
+                "Password recovery will be connected later."
             );
 
         }
 
+
+        /* =====================================================
+           CLOSE MODAL WHEN CLICKING OUTSIDE
+        ===================================================== */
+
+        document
+            .getElementById("signupModal")
+            .addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target ===
+                        document.getElementById(
+                            "signupModal"
+                        )
+                    ) {
+
+                        closeSignup();
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           ESC KEY CLOSES SIGNUP
+        ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Escape") {
+
+                    closeSignup();
+
+                }
+
+            }
+        );
+
     </script>
 
 </body>
+
 </html>
