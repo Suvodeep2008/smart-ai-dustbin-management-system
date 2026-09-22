@@ -33,7 +33,7 @@ app.add_middleware(
     "http://localhost:5500",
     "http://127.0.0.1:5501",
     "http://localhost:5501",
-    "https://smart-ai-dustbin-management-system-1.onrender.com",
+    "https://smart-ai-dustbin-management-system.onrender.com",
 ],
     allow_credentials=True,
     allow_methods=["*"],
