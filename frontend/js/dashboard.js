@@ -2655,34 +2655,140 @@ async function refreshBinsAfterTruckCollection() {
 
     try {
 
-        const binData =
-            await apiRequest("/bins");
+        // ====================================================
+        // GET FRESH BIN DATA + FRESH DASHBOARD SUMMARY
+        // ====================================================
+
+        const [
+            summary,
+            binData
+        ] = await Promise.all([
+
+            apiRequest(
+                "/dashboard/summary"
+            ),
+
+            apiRequest(
+                "/bins"
+            )
+
+        ]);
+
+
+        // ====================================================
+        // UPDATE GLOBAL BIN DATA
+        // ====================================================
 
         bins =
             Array.isArray(binData)
                 ? binData
                 : [];
 
+
+        // ====================================================
+        // UPDATE DASHBOARD SUMMARY CARDS
+        // ====================================================
+
+        if ($("total")) {
+
+            $("total").textContent =
+                summary.total_bins ??
+                bins.length;
+        }
+
+
+        if ($("critical")) {
+
+            $("critical").textContent =
+                summary.critical_bins ??
+                0;
+        }
+
+
+        if ($("needs")) {
+
+            $("needs").textContent =
+                summary.needs_collection ??
+                0;
+        }
+
+
+        if ($("risk")) {
+
+            $("risk").textContent =
+                summary.overflow_risk ??
+                0;
+        }
+
+
+        // ====================================================
+        // UPDATE AI PRIORITY
+        // ====================================================
+
         await loadAIPriorities();
+
+
+        // ====================================================
+        // UPDATE BIN / WORKER LIST CARDS
+        // ====================================================
 
         renderBins();
 
-        if (selectedId && bins.some(bin => bin.id === selectedId)) {
+
+        // ====================================================
+        // KEEP CURRENT BIN SELECTED
+        // ====================================================
+
+        if (
+            selectedId &&
+            bins.some(
+                bin =>
+                    bin.id === selectedId
+            )
+        ) {
+
+            selectBin(selectedId);
+
+        }
+        else if (bins.length) {
+
+            selectedId =
+                bins[0].id;
+
             selectBin(selectedId);
         }
 
+
+        // ====================================================
+        // UPDATE COLLECTION ROUTES
+        // ====================================================
+
         await loadRoutes();
+
+
+        console.log(
+            "Dashboard refreshed after garbage collection:",
+            {
+                critical: summary.critical_bins,
+                needsCollection: summary.needs_collection,
+                overflowRisk: summary.overflow_risk,
+                averageFill: summary.average_fill
+            }
+        );
 
     }
     catch (error) {
 
-        console.warn(
+        console.error(
             "Dashboard refresh after truck collection failed:",
             error
         );
+
+        showToast(
+            "Collection completed, but dashboard refresh failed."
+        );
     }
 }
-
 
 async function getBestTruckRoute() {
 
