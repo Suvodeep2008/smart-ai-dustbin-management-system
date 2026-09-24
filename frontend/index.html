@@ -5650,6 +5650,623 @@ function logoutUser() {
 }
 </script>
 
+
+<!-- ==================================================
+     SMART WASTE LEAFLET LIVE MAP EXTENSION
+     Added after the existing dashboard code.
+     No previous dashboard code is modified.
+================================================== -->
+<style>
+    #smartWasteMapOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: none;
+        padding: 18px;
+        background: rgba(2, 6, 23, 0.78);
+        backdrop-filter: blur(14px);
+    }
+
+    #smartWasteMapOverlay.is-open {
+        display: block;
+    }
+
+    #smartWasteMapShell {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border: 1px solid rgba(56, 189, 248, 0.34);
+        border-radius: 24px;
+        background: #07111f;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55),
+                    0 0 50px rgba(14, 165, 233, 0.10);
+    }
+
+    #smartWasteMap {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: #0b1220;
+    }
+
+    #smartWasteMap .leaflet-control-zoom,
+    #smartWasteMap .leaflet-control-attribution {
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: rgba(7, 17, 31, 0.88);
+        color: #cbd5e1;
+        backdrop-filter: blur(10px);
+    }
+
+    #smartWasteMap .leaflet-control-zoom a {
+        color: #e2e8f0;
+        background: transparent;
+        border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    #smartWasteMap .leaflet-control-attribution a {
+        color: #7dd3fc;
+    }
+
+    .smart-map-topbar {
+        position: absolute;
+        z-index: 1000;
+        top: 18px;
+        left: 18px;
+        right: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        pointer-events: none;
+    }
+
+    .smart-map-title {
+        pointer-events: auto;
+        min-width: 250px;
+        padding: 12px 16px;
+        border: 1px solid rgba(56, 189, 248, 0.26);
+        border-radius: 15px;
+        background: rgba(7, 17, 31, 0.88);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    }
+
+    .smart-map-title strong {
+        display: block;
+        color: #f8fafc;
+        font-size: 15px;
+        letter-spacing: 0.04em;
+    }
+
+    .smart-map-title span {
+        display: block;
+        margin-top: 3px;
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+    .smart-map-actions {
+        display: flex;
+        gap: 8px;
+        pointer-events: auto;
+    }
+
+    .smart-map-btn {
+        border: 1px solid rgba(56, 189, 248, 0.30);
+        border-radius: 12px;
+        padding: 10px 13px;
+        color: #e0f2fe;
+        background: rgba(7, 17, 31, 0.90);
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        backdrop-filter: blur(12px);
+        transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .smart-map-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(56, 189, 248, 0.75);
+        background: rgba(14, 116, 144, 0.28);
+    }
+
+    .smart-map-stats {
+        position: absolute;
+        z-index: 1000;
+        left: 18px;
+        bottom: 18px;
+        display: flex;
+        gap: 9px;
+        pointer-events: none;
+        flex-wrap: wrap;
+    }
+
+    .smart-map-stat {
+        min-width: 88px;
+        padding: 9px 11px;
+        border: 1px solid rgba(148, 163, 184, 0.20);
+        border-radius: 13px;
+        background: rgba(7, 17, 31, 0.88);
+        backdrop-filter: blur(12px);
+    }
+
+    .smart-map-stat b {
+        display: block;
+        color: #f8fafc;
+        font-size: 16px;
+    }
+
+    .smart-map-stat span {
+        color: #94a3b8;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+    }
+
+    .smart-map-legend {
+        position: absolute;
+        z-index: 1000;
+        right: 18px;
+        bottom: 18px;
+        padding: 10px 12px;
+        border: 1px solid rgba(148, 163, 184, 0.20);
+        border-radius: 13px;
+        background: rgba(7, 17, 31, 0.88);
+        backdrop-filter: blur(12px);
+        color: #cbd5e1;
+        font-size: 11px;
+    }
+
+    .smart-map-legend-row {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin: 4px 0;
+    }
+
+    .smart-map-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        box-shadow: 0 0 10px currentColor;
+    }
+
+    .smart-map-bin-marker {
+        width: 18px;
+        height: 18px;
+        border: 3px solid rgba(255,255,255,.92);
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        box-shadow: 0 0 18px currentColor, 0 5px 14px rgba(0,0,0,.42);
+    }
+
+    .smart-map-bin-marker > i {
+        display: block;
+        width: 5px;
+        height: 5px;
+        margin: 4px auto 0;
+        border-radius: 50%;
+        background: #fff;
+    }
+
+    .smart-map-bin-marker.normal { color: #22c55e; background: #16a34a; }
+    .smart-map-bin-marker.warning { color: #f59e0b; background: #d97706; }
+    .smart-map-bin-marker.critical { color: #ef4444; background: #dc2626; }
+
+    .smart-map-detail {
+        position: absolute;
+        z-index: 1001;
+        top: 86px;
+        right: 18px;
+        width: min(330px, calc(100vw - 36px));
+        display: none;
+        padding: 16px;
+        border: 1px solid rgba(56, 189, 248, 0.28);
+        border-radius: 17px;
+        background: rgba(7, 17, 31, 0.94);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 20px 55px rgba(0,0,0,.35);
+        color: #e2e8f0;
+    }
+
+    .smart-map-detail.is-visible { display: block; }
+
+    .smart-map-detail h3 {
+        margin: 0 0 4px;
+        font-size: 16px;
+        color: #f8fafc;
+    }
+
+    .smart-map-detail .map-detail-location {
+        margin-bottom: 12px;
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+    .smart-map-detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .smart-map-detail-cell {
+        padding: 9px;
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        border-radius: 10px;
+        background: rgba(15, 23, 42, 0.60);
+    }
+
+    .smart-map-detail-cell span {
+        display: block;
+        color: #64748b;
+        font-size: 9px;
+        text-transform: uppercase;
+    }
+
+    .smart-map-detail-cell b {
+        display: block;
+        margin-top: 3px;
+        color: #f1f5f9;
+        font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+        #smartWasteMapOverlay { padding: 8px; }
+        #smartWasteMapShell { border-radius: 16px; }
+        .smart-map-topbar { top: 10px; left: 10px; right: 10px; }
+        .smart-map-title { min-width: 0; padding: 10px 12px; }
+        .smart-map-title span { display: none; }
+        .smart-map-actions { gap: 5px; }
+        .smart-map-btn { padding: 9px 10px; font-size: 11px; }
+        .smart-map-stats { left: 10px; bottom: 10px; right: 10px; }
+        .smart-map-stat { min-width: 70px; }
+        .smart-map-legend { right: 10px; bottom: 84px; }
+        .smart-map-detail { top: 75px; right: 10px; }
+    }
+</style>
+
+<div id="smartWasteMapOverlay" aria-hidden="true">
+    <div id="smartWasteMapShell">
+        <div id="smartWasteMap"></div>
+
+        <div class="smart-map-topbar">
+            <div class="smart-map-title">
+                <strong>SMART WASTE · LIVE CITY MAP</strong>
+                <span>Real-time bin network visualization · Kolkata</span>
+            </div>
+
+            <div class="smart-map-actions">
+                <button type="button" class="smart-map-btn" id="smartMapRecenter">⌖ Recenter</button>
+                <button type="button" class="smart-map-btn" id="smartMapRefresh">↻ Refresh</button>
+                <button type="button" class="smart-map-btn" id="smartMapClose">✕ Close</button>
+            </div>
+        </div>
+
+        <div class="smart-map-stats">
+            <div class="smart-map-stat"><b id="smartMapTotal">0</b><span>Bins</span></div>
+            <div class="smart-map-stat"><b id="smartMapCritical">0</b><span>Critical</span></div>
+            <div class="smart-map-stat"><b id="smartMapWarning">0</b><span>Warning</span></div>
+            <div class="smart-map-stat"><b id="smartMapNetwork">ONLINE</b><span>Network</span></div>
+        </div>
+
+        <div class="smart-map-legend">
+            <div class="smart-map-legend-row"><span class="smart-map-dot" style="color:#22c55e;background:#22c55e"></span> Normal</div>
+            <div class="smart-map-legend-row"><span class="smart-map-dot" style="color:#f59e0b;background:#f59e0b"></span> Warning</div>
+            <div class="smart-map-legend-row"><span class="smart-map-dot" style="color:#ef4444;background:#ef4444"></span> Critical</div>
+        </div>
+
+        <div class="smart-map-detail" id="smartMapDetail">
+            <h3 id="smartMapDetailTitle">Bin</h3>
+            <div class="map-detail-location" id="smartMapDetailLocation">Location</div>
+            <div class="smart-map-detail-grid">
+                <div class="smart-map-detail-cell"><span>Fill level</span><b id="smartMapDetailLevel">—</b></div>
+                <div class="smart-map-detail-cell"><span>Status</span><b id="smartMapDetailStatus">—</b></div>
+                <div class="smart-map-detail-cell"><span>Type</span><b id="smartMapDetailType">—</b></div>
+                <div class="smart-map-detail-cell"><span>Fill rate</span><b id="smartMapDetailRate">—</b></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ==================================================
+   SMART WASTE · LEAFLET LIVE MAP
+   This block is intentionally appended only.
+   Existing index.html code above remains unchanged.
+================================================== */
+(function () {
+    "use strict";
+
+    const KOLKATA_CENTER = [22.5726, 88.3639];
+    let smartWasteLeafletMap = null;
+    let smartWasteMarkers = [];
+    let smartWasteMapOpen = false;
+    let leafletLoadPromise = null;
+
+    const locationCoordinates = {
+        "salt lake": [22.5867, 88.4171],
+        "salt lake, sector v": [22.5749, 88.4332],
+        "sector v": [22.5749, 88.4332],
+        "gariahat market": [22.5186, 88.3654],
+        "esplanade bus terminus": [22.5646, 88.3510],
+        "new town, eco park gate": [22.6139, 88.4640],
+        "eco park gate": [22.6139, 88.4640],
+        "howrah station east": [22.5836, 88.3433],
+        "howrah station": [22.5836, 88.3433]
+    };
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    function normalizeText(value) {
+        return String(value || "")
+            .toLowerCase()
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    function getBinLevel(bin) {
+        const raw = bin && (bin.level ?? bin.fillLevel ?? bin.fill_level ?? bin.fill);
+        const value = Number(raw);
+        return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 0;
+    }
+
+    function getBinStatus(level) {
+        if (level >= 85) return "critical";
+        if (level >= 65) return "warning";
+        return "normal";
+    }
+
+    function getCoordinates(bin, index) {
+        const location = normalizeText(bin && (bin.loc || bin.location || bin.address));
+
+        for (const key of Object.keys(locationCoordinates)) {
+            if (location.includes(key)) {
+                return locationCoordinates[key];
+            }
+        }
+
+        // Fallback for synthetic/demo bins without a real geocoded location.
+        // Their marker is kept inside the Kolkata view using deterministic offsets.
+        const rawX = Number(bin && bin.x);
+        const rawY = Number(bin && bin.y);
+        let seed = Number.isFinite(rawX) && Number.isFinite(rawY)
+            ? Math.abs(rawX * 17.13 + rawY * 31.77)
+            : Math.abs(index * 47.91);
+
+        const angle = (seed % 360) * Math.PI / 180;
+        const radius = 0.015 + ((seed * 0.00017) % 0.045);
+
+        return [
+            KOLKATA_CENTER[0] + Math.sin(angle) * radius,
+            KOLKATA_CENTER[1] + Math.cos(angle) * radius
+        ];
+    }
+
+    function loadLeaflet() {
+        if (window.L) return Promise.resolve();
+        if (leafletLoadPromise) return leafletLoadPromise;
+
+        leafletLoadPromise = new Promise((resolve, reject) => {
+            const existingCss = document.querySelector('link[data-smart-leaflet="1"]');
+            if (!existingCss) {
+                const css = document.createElement("link");
+                css.rel = "stylesheet";
+                css.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+                css.crossOrigin = "";
+                css.dataset.smartLeaflet = "1";
+                document.head.appendChild(css);
+            }
+
+            const script = document.createElement("script");
+            script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+            script.integrity = "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=";
+            script.crossOrigin = "";
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error("Leaflet could not be loaded."));
+            document.head.appendChild(script);
+        });
+
+        return leafletLoadPromise;
+    }
+
+    function createBinIcon(status) {
+        return L.divIcon({
+            className: "smart-map-marker-wrapper",
+            html: `<div class="smart-map-bin-marker ${status}"><i></i></div>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 20],
+            popupAnchor: [0, -17]
+        });
+    }
+
+    function clearMarkers() {
+        smartWasteMarkers.forEach(marker => {
+            if (smartWasteLeafletMap) smartWasteLeafletMap.removeLayer(marker);
+        });
+        smartWasteMarkers = [];
+    }
+
+    function updateStats(bins) {
+        const total = bins.length;
+        const critical = bins.filter(bin => getBinStatus(getBinLevel(bin)) === "critical").length;
+        const warning = bins.filter(bin => getBinStatus(getBinLevel(bin)) === "warning").length;
+
+        $("smartMapTotal").textContent = total;
+        $("smartMapCritical").textContent = critical;
+        $("smartMapWarning").textContent = warning;
+        $("smartMapNetwork").textContent = "ONLINE";
+    }
+
+    function showBinDetail(bin) {
+        const level = getBinLevel(bin);
+        const status = getBinStatus(level);
+        const type = bin && (bin.type || bin.category || "General");
+        const rate = bin && (bin.rateHr ?? bin.rate ?? bin.fillRate);
+        const location = bin && (bin.loc || bin.location || bin.address || "Kolkata");
+        const id = bin && (bin.id || bin.binId || "BIN");
+
+        $("smartMapDetailTitle").textContent = String(id);
+        $("smartMapDetailLocation").textContent = String(location);
+        $("smartMapDetailLevel").textContent = `${Math.round(level)}%`;
+        $("smartMapDetailStatus").textContent = status.toUpperCase();
+        $("smartMapDetailType").textContent = String(type);
+        $("smartMapDetailRate").textContent = rate == null ? "—" : `${rate}% / hr`;
+        $("smartMapDetail").classList.add("is-visible");
+    }
+
+    function addBinsToMap(bins) {
+        clearMarkers();
+        updateStats(bins);
+
+        bins.forEach((bin, index) => {
+            const level = getBinLevel(bin);
+            const status = getBinStatus(level);
+            const coordinates = getCoordinates(bin, index);
+            const id = bin && (bin.id || bin.binId || `BIN-${index + 1}`);
+            const location = bin && (bin.loc || bin.location || bin.address || "Kolkata");
+
+            const marker = L.marker(coordinates, {
+                icon: createBinIcon(status),
+                title: String(id)
+            }).addTo(smartWasteLeafletMap);
+
+            marker.bindPopup(`
+                <div style="min-width:190px;font-family:Inter,Arial,sans-serif">
+                    <strong style="font-size:14px">${String(id)}</strong><br>
+                    <span style="color:#64748b;font-size:11px">${String(location)}</span>
+                    <hr style="border:0;border-top:1px solid #e2e8f0;margin:8px 0">
+                    <b>Fill:</b> ${Math.round(level)}%<br>
+                    <b>Status:</b> ${status.toUpperCase()}
+                </div>
+            `);
+
+            marker.on("click", () => showBinDetail(bin));
+            smartWasteMarkers.push(marker);
+        });
+    }
+
+    async function loadBinsForMap() {
+        if (!smartWasteLeafletMap) return;
+
+        if (typeof window.apiRequest !== "function") {
+            $("smartMapNetwork").textContent = "WAITING";
+            setTimeout(loadBinsForMap, 800);
+            return;
+        }
+
+        try {
+            $("smartMapNetwork").textContent = "SYNC";
+            const data = await window.apiRequest("/bins");
+            const bins = Array.isArray(data) ? data : (Array.isArray(data?.bins) ? data.bins : []);
+            addBinsToMap(bins);
+        } catch (error) {
+            console.error("Live Map: failed to load bins", error);
+            $("smartMapNetwork").textContent = "OFFLINE";
+            updateStats([]);
+        }
+    }
+
+    async function openLiveMap() {
+        if (smartWasteMapOpen) return;
+        smartWasteMapOpen = true;
+
+        const overlay = $("smartWasteMapOverlay");
+        overlay.classList.add("is-open");
+        overlay.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+
+        try {
+            await loadLeaflet();
+
+            if (!smartWasteLeafletMap) {
+                smartWasteLeafletMap = L.map("smartWasteMap", {
+                    zoomControl: true,
+                    preferCanvas: true
+                }).setView(KOLKATA_CENTER, 11.7);
+
+                L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors'
+                }).addTo(smartWasteLeafletMap);
+            }
+
+            setTimeout(() => smartWasteLeafletMap.invalidateSize(), 80);
+            await loadBinsForMap();
+        } catch (error) {
+            console.error("Live Map: Leaflet failed to load", error);
+            $("smartMapNetwork").textContent = "MAP ERROR";
+        }
+    }
+
+    function closeLiveMap() {
+        smartWasteMapOpen = false;
+        $("smartWasteMapOverlay").classList.remove("is-open");
+        $("smartWasteMapOverlay").setAttribute("aria-hidden", "true");
+        $("smartMapDetail").classList.remove("is-visible");
+        document.body.style.overflow = "";
+    }
+
+    function recenterMap() {
+        if (!smartWasteLeafletMap) return;
+        smartWasteLeafletMap.setView(KOLKATA_CENTER, 11.7, { animate: true });
+    }
+
+    function attachLiveMapButton() {
+        const items = document.querySelectorAll(".sidebar-item");
+        let liveMapItem = null;
+
+        items.forEach(item => {
+            const text = normalizeText(item.textContent);
+            if (!liveMapItem && text.includes("live map")) {
+                liveMapItem = item;
+            }
+        });
+
+        if (!liveMapItem) {
+            setTimeout(attachLiveMapButton, 700);
+            return;
+        }
+
+        if (liveMapItem.dataset.smartLeafletBound === "1") return;
+        liveMapItem.dataset.smartLeafletBound = "1";
+        liveMapItem.addEventListener("click", function () {
+            openLiveMap();
+        });
+    }
+
+    function initializeSmartLeafletMap() {
+        const overlay = $("smartWasteMapOverlay");
+        if (!overlay) return;
+
+        $("smartMapClose").addEventListener("click", closeLiveMap);
+        $("smartMapRecenter").addEventListener("click", recenterMap);
+        $("smartMapRefresh").addEventListener("click", loadBinsForMap);
+
+        overlay.addEventListener("click", function (event) {
+            if (event.target === overlay) closeLiveMap();
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && smartWasteMapOpen) {
+                closeLiveMap();
+            }
+        });
+
+        attachLiveMapButton();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeSmartLeafletMap);
+    } else {
+        initializeSmartLeafletMap();
+    }
+})();
+</script>
+
 </body>
 
 </html>
