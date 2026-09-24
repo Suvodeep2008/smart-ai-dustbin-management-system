@@ -3163,6 +3163,10 @@ async function automaticFillBins() {
 
     try {
 
+        // ====================================================
+        // SIMULATE BIN FILLING
+        // ====================================================
+
         const updatedBins =
             await apiRequest(
                 `/bins/simulate-fill?seconds=5&multiplier=${AUTOMATIC_FILL_MULTIPLIER}`,
@@ -3171,15 +3175,82 @@ async function automaticFillBins() {
                 }
             );
 
+
         if (!Array.isArray(updatedBins)) {
             return;
         }
 
+
+        // ====================================================
+        // UPDATE LOCAL BIN DATA
+        // ====================================================
+
         bins = updatedBins;
+
+
+        // ====================================================
+        // GET FRESH DASHBOARD SUMMARY
+        // ====================================================
+
+        const summary =
+            await apiRequest(
+                "/dashboard/summary"
+            );
+
+
+        // ====================================================
+        // UPDATE TOP DASHBOARD CARDS
+        // ====================================================
+
+        if ($("total")) {
+
+            $("total").textContent =
+                summary.total_bins ??
+                bins.length;
+        }
+
+
+        if ($("critical")) {
+
+            $("critical").textContent =
+                summary.critical_bins ??
+                0;
+        }
+
+
+        if ($("needs")) {
+
+            $("needs").textContent =
+                summary.needs_collection ??
+                0;
+        }
+
+
+        if ($("risk")) {
+
+            $("risk").textContent =
+                summary.overflow_risk ??
+                0;
+        }
+
+
+        // ====================================================
+        // UPDATE AI PRIORITY
+        // ====================================================
 
         await loadAIPriorities();
 
+
+        // ====================================================
+        // UPDATE BIN CARDS
+        // ====================================================
+
         renderBins();
+
+
+        // ====================================================
+        // KEEP SELECTED BIN UPDATED
+        // ====================================================
 
         if (
             selectedId &&
@@ -3188,10 +3259,22 @@ async function automaticFillBins() {
                     bin.id === selectedId
             )
         ) {
+
             selectBin(selectedId);
+
         }
 
+
+        // ====================================================
+        // UPDATE COLLECTION ROUTES
+        // ====================================================
+
         await loadRoutes();
+
+
+        // ====================================================
+        // CHECK FOR 100% FULL BIN
+        // ====================================================
 
         const fullBin =
             bins.find(
@@ -3199,6 +3282,11 @@ async function automaticFillBins() {
                     Number(bin.level) >= 100 &&
                     Number(bin.rateHr) > 0
             );
+
+
+        // ====================================================
+        // AUTOMATIC AI TRUCK DISPATCH
+        // ====================================================
 
         if (
             fullBin &&
@@ -3224,6 +3312,21 @@ async function automaticFillBins() {
 
             }
         }
+
+
+        // ====================================================
+        // DEBUG LOG
+        // ====================================================
+
+        console.log(
+            "Automatic dashboard refresh:",
+            {
+                critical: summary.critical_bins,
+                needsCollection: summary.needs_collection,
+                overflowRisk: summary.overflow_risk,
+                averageFill: summary.average_fill
+            }
+        );
 
     }
     catch (error) {
