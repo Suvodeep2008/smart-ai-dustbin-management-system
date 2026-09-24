@@ -6272,6 +6272,15 @@ function logoutUser() {
         attachLiveMapButton();
     }
 
+    // Small public bridge used only by the appended truck-tracking extension.
+    // Existing map behavior remains unchanged.
+    window.smartWasteMapController = {
+        getMap: () => smartWasteLeafletMap,
+        isOpen: () => smartWasteMapOpen,
+        getCoordinates,
+        getCenter: () => KOLKATA_CENTER
+    };
+
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", initializeSmartLeafletMap);
     } else {
@@ -6279,6 +6288,878 @@ function logoutUser() {
     }
 })();
 </script>
+
+
+<!-- ==================================================
+     SMART WASTE · LIVE TRUCK TRACKING EXTENSION
+     Appended only. Existing dashboard/map code above is preserved.
+     Fixes:
+     - uses the real existing Leaflet map instance
+     - works with the existing /api/trucks/ endpoint
+     - shows available trucks at the depot
+     - shows active routes
+     - animates truck movement between backend positions
+     - removes stale truck markers/routes safely
+================================================== -->
+<style>
+    .smart-truck-hud {
+        position: absolute;
+        z-index: 1002;
+        top: 86px;
+        left: 18px;
+        width: min(285px, calc(100vw - 36px));
+        max-height: 48vh;
+        overflow: auto;
+        display: none;
+        padding: 12px;
+        border: 1px solid rgba(56,189,248,.24);
+        border-radius: 16px;
+        background: rgba(7,17,31,.94);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 18px 50px rgba(0,0,0,.38);
+        color: #e2e8f0;
+        scrollbar-width: thin;
+    }
+
+    .smart-truck-hud.is-visible {
+        display: block;
+    }
+
+    .smart-truck-hud-head {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+        margin-bottom:8px;
+    }
+
+    .smart-truck-hud-head strong {
+        font-size:12px;
+        letter-spacing:.05em;
+    }
+
+    .smart-truck-live {
+        display:flex;
+        align-items:center;
+        gap:5px;
+        color:#67e8f9;
+        font-size:9px;
+        text-transform:uppercase;
+        letter-spacing:.1em;
+    }
+
+    .smart-truck-live i {
+        width:7px;
+        height:7px;
+        border-radius:50%;
+        background:#22c55e;
+        box-shadow:0 0 10px #22c55e;
+        animation:smartTruckPulse 1.3s infinite;
+    }
+
+    @keyframes smartTruckPulse {
+        50% {
+            opacity:.35;
+            transform:scale(.75);
+        }
+    }
+
+    .smart-truck-card {
+        padding:10px;
+        margin-top:7px;
+        border:1px solid rgba(148,163,184,.14);
+        border-radius:11px;
+        background:rgba(15,23,42,.58);
+    }
+
+    .smart-truck-card.active {
+        border-color:rgba(34,197,94,.30);
+        box-shadow:inset 0 0 22px rgba(34,197,94,.035);
+    }
+
+    .smart-truck-card-top {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:8px;
+    }
+
+    .smart-truck-name {
+        font-weight:800;
+        font-size:11px;
+    }
+
+    .smart-truck-status {
+        font-size:8px;
+        font-weight:800;
+        letter-spacing:.08em;
+        white-space:nowrap;
+    }
+
+    .smart-truck-meta {
+        margin-top:5px;
+        color:#94a3b8;
+        font-size:9px;
+        line-height:1.5;
+    }
+
+    .smart-truck-progress {
+        height:3px;
+        margin-top:7px;
+        overflow:hidden;
+        border-radius:99px;
+        background:rgba(255,255,255,.07);
+    }
+
+    .smart-truck-progress span {
+        display:block;
+        height:100%;
+        width:0;
+        border-radius:inherit;
+        transition:width .35s ease;
+    }
+
+    .smart-truck-marker-wrap {
+        background:transparent !important;
+        border:0 !important;
+    }
+
+    .smart-truck-marker {
+        width:34px;
+        height:23px;
+        position:relative;
+        border-radius:7px 5px 5px 7px;
+        background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+        border:2px solid rgba(255,255,255,.95);
+        box-shadow:0 0 20px rgba(14,165,233,.7),0 7px 16px rgba(0,0,0,.45);
+        transform-origin:center center;
+    }
+
+    .smart-truck-marker::before {
+        content:"";
+        position:absolute;
+        right:-10px;
+        top:5px;
+        width:12px;
+        height:14px;
+        border-radius:2px 5px 5px 2px;
+        background:#0f6f9e;
+        border:2px solid rgba(255,255,255,.9);
+        border-left:0;
+    }
+
+    .smart-truck-marker::after {
+        content:"";
+        position:absolute;
+        left:5px;
+        bottom:-7px;
+        width:7px;
+        height:7px;
+        border-radius:50%;
+        background:#020617;
+        box-shadow:
+            19px 0 0 #020617,
+            0 0 0 1px #94a3b8,
+            19px 0 0 1px #94a3b8;
+    }
+
+    .smart-truck-marker.degradable {
+        background:linear-gradient(135deg,#22c55e,#15803d);
+        box-shadow:
+            0 0 20px rgba(34,197,94,.65),
+            0 7px 16px rgba(0,0,0,.45);
+    }
+
+    .smart-truck-marker.degradable::before {
+        background:#166534;
+    }
+
+    .smart-truck-marker.non-degradable {
+        background:linear-gradient(135deg,#60a5fa,#2563eb);
+        box-shadow:
+            0 0 20px rgba(59,130,246,.65),
+            0 7px 16px rgba(0,0,0,.45);
+    }
+
+    .smart-truck-marker.non-degradable::before {
+        background:#1d4ed8;
+    }
+
+    .smart-truck-marker.available {
+        opacity:.82;
+    }
+
+    .smart-truck-marker.en_route,
+    .smart-truck-marker.collecting {
+        animation:smartTruckFloat 1.2s ease-in-out infinite;
+    }
+
+    .smart-truck-marker.returning {
+        animation:smartTruckReturn 1s ease-in-out infinite;
+    }
+
+    @keyframes smartTruckFloat {
+        50% { transform:translateY(-3px); }
+    }
+
+    @keyframes smartTruckReturn {
+        50% { transform:translateY(-2px) rotate(-3deg); }
+    }
+
+    .smart-truck-route {
+        fill:none;
+        stroke-width:4;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        stroke-dasharray:9 8;
+        animation:smartTruckRouteFlow .8s linear infinite;
+        filter:drop-shadow(0 0 5px currentColor);
+    }
+
+    .smart-truck-route.degradable {
+        stroke:#22c55e;
+        color:#22c55e;
+    }
+
+    .smart-truck-route.non-degradable {
+        stroke:#60a5fa;
+        color:#60a5fa;
+    }
+
+    @keyframes smartTruckRouteFlow {
+        to { stroke-dashoffset:-17; }
+    }
+
+    .smart-truck-depot {
+        width:20px;
+        height:20px;
+        display:grid;
+        place-items:center;
+        border-radius:7px;
+        color:#f8fafc;
+        background:linear-gradient(135deg,#a78bfa,#6d28d9);
+        border:2px solid rgba(255,255,255,.9);
+        box-shadow:0 0 20px rgba(139,92,246,.65);
+        font-size:10px;
+        font-weight:900;
+    }
+
+    @media(max-width:700px) {
+        .smart-truck-hud {
+            left:10px;
+            top:74px;
+            width:230px;
+        }
+    }
+</style>
+
+<div class="smart-truck-hud" id="smartTruckHud">
+    <div class="smart-truck-hud-head">
+        <strong>TRUCK NETWORK</strong>
+        <span class="smart-truck-live"><i></i> LIVE</span>
+    </div>
+    <div id="smartTruckCards"></div>
+</div>
+
+<script>
+/* ==================================================
+   SMART WASTE · LIVE TRUCK TRACKING
+   Uses the existing Leaflet map controller and backend.
+================================================== */
+(function () {
+    "use strict";
+
+    const DEPOT_COORDINATES = [22.5726, 88.3639];
+    const REFRESH_MS = 2500;
+    const ANIMATION_MS = 1800;
+
+    let truckMarkers = {};
+    let truckRoutes = {};
+    let truckState = {};
+    let truckTimer = null;
+
+    function getController() {
+        return window.smartWasteMapController || null;
+    }
+
+    function getMap() {
+        const controller = getController();
+        return controller && controller.getMap ? controller.getMap() : null;
+    }
+
+    function isMapOpen() {
+        const controller = getController();
+        return !!(controller && controller.isOpen && controller.isOpen());
+    }
+
+    function normalizeTruckType(truck) {
+        return String(truck && truck.type || "")
+            .toLowerCase()
+            .includes("non")
+            ? "non-degradable"
+            : "degradable";
+    }
+
+    function statusColor(status) {
+        return {
+            available: "#94a3b8",
+            en_route: "#38bdf8",
+            collecting: "#f59e0b",
+            returning: "#a78bfa"
+        }[String(status || "available").toLowerCase()] || "#38bdf8";
+    }
+
+    function statusLabel(status) {
+        return {
+            available: "AVAILABLE",
+            en_route: "EN ROUTE",
+            collecting: "COLLECTING",
+            returning: "RETURNING"
+        }[String(status || "available").toLowerCase()] ||
+        String(status || "AVAILABLE").toUpperCase();
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function truckIcon(truck) {
+        const type = normalizeTruckType(truck);
+        const status = String(truck && truck.status || "available").toLowerCase();
+
+        return L.divIcon({
+            className: "smart-truck-marker-wrap",
+            html:
+                `<div class="smart-truck-marker ${type} ${escapeHtml(status)}" ` +
+                `title="${escapeHtml(truck && (truck.name || truck.id) || "Truck")}"></div>`,
+            iconSize: [46, 34],
+            iconAnchor: [23, 21],
+            popupAnchor: [0, -20]
+        });
+    }
+
+    function depotIcon() {
+        return L.divIcon({
+            className: "smart-truck-marker-wrap",
+            html: `<div class="smart-truck-depot">D</div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+        });
+    }
+
+    function getBins(data) {
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data && data.bins)) return data.bins;
+        return [];
+    }
+
+    function getTrucks(data) {
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data && data.trucks)) return data.trucks;
+        return [];
+    }
+
+    function getBinId(value) {
+        if (!value) return null;
+        if (typeof value === "string" || typeof value === "number") {
+            return String(value);
+        }
+        return String(value.bin_id || value.binId || value.id || "");
+    }
+
+    function findBin(bins, id) {
+        const target = String(id || "");
+        return bins.find(bin =>
+            String(bin && (bin.id || bin.binId) || "") === target
+        ) || null;
+    }
+
+    function getCoordinate(bin, index, controller) {
+        if (bin && controller && typeof controller.getCoordinates === "function") {
+            return controller.getCoordinates(bin, index);
+        }
+
+        // Safe deterministic fallback for a route stop that is not in /bins.
+        const seed = Math.abs(
+            String(bin && (bin.id || bin.bin_id || bin.loc) || index)
+                .split("")
+                .reduce((sum, char) => sum + char.charCodeAt(0), 0)
+        );
+
+        const angle = (seed % 360) * Math.PI / 180;
+        const radius = 0.01 + ((seed % 30) / 1000);
+
+        return [
+            DEPOT_COORDINATES[0] + Math.sin(angle) * radius,
+            DEPOT_COORDINATES[1] + Math.cos(angle) * radius
+        ];
+    }
+
+    function getStopCoordinates(truck, bins, controller) {
+        const route = Array.isArray(truck && truck.route) ? truck.route : [];
+
+        return route
+            .map((stop, index) => {
+                const id = getBinId(stop);
+                const bin = findBin(bins, id);
+
+                if (bin) {
+                    return getCoordinate(bin, index, controller);
+                }
+
+                if (stop && stop.loc) {
+                    return getCoordinate(stop, index, controller);
+                }
+
+                return null;
+            })
+            .filter(Boolean);
+    }
+
+    function getTruckPosition(truck, bins, index, controller) {
+        const status = String(truck && truck.status || "available").toLowerCase();
+
+        if (status === "returning" || status === "available") {
+            return DEPOT_COORDINATES.slice();
+        }
+
+        const currentBin = findBin(
+            bins,
+            truck && truck.current_bin
+        );
+
+        if (currentBin) {
+            return getCoordinate(currentBin, index, controller);
+        }
+
+        const routePoints = getStopCoordinates(truck, bins, controller);
+
+        return routePoints.length
+            ? routePoints[0]
+            : DEPOT_COORDINATES.slice();
+    }
+
+    function interpolate(a, b, progress) {
+        return [
+            a[0] + (b[0] - a[0]) * progress,
+            a[1] + (b[1] - a[1]) * progress
+        ];
+    }
+
+    function animateMarker(marker, from, to, duration) {
+        if (!marker || !from || !to) return;
+
+        const started = performance.now();
+
+        function frame(now) {
+            const elapsed = now - started;
+            const progress = Math.min(1, elapsed / duration);
+
+            // Smooth ease-in/ease-out movement.
+            const eased =
+                progress < 0.5
+                    ? 2 * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+            marker.setLatLng(interpolate(from, to, eased));
+
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            }
+        }
+
+        requestAnimationFrame(frame);
+    }
+
+    function buildRoute(truck, bins, controller, index) {
+        const status = String(truck && truck.status || "available").toLowerCase();
+        const stops = getStopCoordinates(truck, bins, controller);
+
+        if (!stops.length || status === "available") {
+            return [];
+        }
+
+        const current = getTruckPosition(truck, bins, index, controller);
+
+        if (status === "returning") {
+            return [current, DEPOT_COORDINATES.slice()];
+        }
+
+        return [current, ...stops];
+    }
+
+    function createOrUpdateMarker(truck, position, index, map) {
+        const id = String(truck && truck.id || `truck-${index}`);
+
+        if (!truckMarkers[id]) {
+            truckMarkers[id] = L.marker(position, {
+                icon: truckIcon(truck),
+                zIndexOffset: 1200
+            }).addTo(map);
+
+            truckState[id] = {
+                position: position.slice()
+            };
+        } else {
+            const previous = truckState[id] &&
+                truckState[id].position;
+
+            truckMarkers[id].setIcon(truckIcon(truck));
+
+            if (
+                previous &&
+                (
+                    Math.abs(previous[0] - position[0]) > 0.000001 ||
+                    Math.abs(previous[1] - position[1]) > 0.000001
+                )
+            ) {
+                animateMarker(
+                    truckMarkers[id],
+                    previous,
+                    position,
+                    ANIMATION_MS
+                );
+            } else {
+                truckMarkers[id].setLatLng(position);
+            }
+
+            truckState[id].position = position.slice();
+        }
+
+        const status = String(truck && truck.status || "available").toLowerCase();
+        const type = normalizeTruckType(truck);
+        const currentBin = truck && truck.current_bin
+            ? truck.current_bin
+            : "Collection Depot";
+
+        truckMarkers[id].bindPopup(`
+            <div style="min-width:210px;font-family:Inter,Arial,sans-serif">
+                <strong style="font-size:14px">
+                    ${escapeHtml(truck && (truck.name || id))}
+                </strong>
+                <br>
+                <span style="color:${statusColor(status)};font-weight:800">
+                    ${escapeHtml(statusLabel(status))}
+                </span>
+                <hr style="border:0;border-top:1px solid #e2e8f0;margin:8px 0">
+                <b>Truck:</b> ${escapeHtml(id)}<br>
+                <b>Waste:</b> ${escapeHtml(type)}<br>
+                <b>Current:</b> ${escapeHtml(currentBin)}<br>
+                <b>Load:</b> ${Number(truck && truck.load || 0).toFixed(1)}
+            </div>
+        `);
+    }
+
+    function updateRoutes(trucks, bins, controller, map) {
+        Object.keys(truckRoutes).forEach(id => {
+            if (map.hasLayer(truckRoutes[id])) {
+                map.removeLayer(truckRoutes[id]);
+            }
+        });
+
+        truckRoutes = {};
+
+        trucks.forEach((truck, index) => {
+            const id = String(truck && truck.id || `truck-${index}`);
+            const status = String(truck && truck.status || "available").toLowerCase();
+            const points = buildRoute(truck, bins, controller, index);
+
+            if (points.length < 2) return;
+
+            const type = normalizeTruckType(truck);
+            const color = type === "degradable"
+                ? "#22c55e"
+                : "#60a5fa";
+
+            truckRoutes[id] = L.polyline(points, {
+                className: `smart-truck-route ${type}`,
+                color,
+                weight: 4,
+                opacity: status === "returning" ? .58 : .82,
+                dashArray: "9 8"
+            }).addTo(map);
+        });
+    }
+
+    function updateDepot(map) {
+        if (map.__smartTruckDepotMarker) return;
+
+        map.__smartTruckDepotMarker = L.marker(
+            DEPOT_COORDINATES,
+            {
+                icon: depotIcon(),
+                zIndexOffset: 1100
+            }
+        ).addTo(map);
+
+        map.__smartTruckDepotMarker.bindTooltip(
+            "Collection Depot",
+            {
+                direction: "top",
+                offset: [0, -8]
+            }
+        );
+    }
+
+    function updateHud(trucks) {
+        const hud = document.getElementById("smartTruckHud");
+        const cards = document.getElementById("smartTruckCards");
+
+        if (!hud || !cards) return;
+
+        hud.classList.add("is-visible");
+
+        if (!trucks.length) {
+            cards.innerHTML = `
+                <div class="smart-truck-card">
+                    <div class="smart-truck-meta">
+                        No trucks returned by the backend.
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        cards.innerHTML = trucks.map(truck => {
+            const status = String(
+                truck && truck.status || "available"
+            ).toLowerCase();
+
+            const type = normalizeTruckType(truck);
+            const color = statusColor(status);
+            const current = truck && truck.current_bin
+                ? truck.current_bin
+                : "Collection Depot";
+
+            const route = Array.isArray(truck && truck.route)
+                ? truck.route.length
+                : 0;
+
+            const completed = Array.isArray(truck && truck.completed)
+                ? truck.completed.length
+                : 0;
+
+            const totalStops = route + completed;
+            const progress = totalStops
+                ? Math.min(100, (completed / totalStops) * 100)
+                : 0;
+
+            return `
+                <div class="smart-truck-card ${status !== "available" ? "active" : ""}">
+                    <div class="smart-truck-card-top">
+                        <span class="smart-truck-name">
+                            ${escapeHtml(truck && (truck.name || truck.id || "Truck"))}
+                        </span>
+                        <span class="smart-truck-status" style="color:${color}">
+                            ${escapeHtml(statusLabel(status))}
+                        </span>
+                    </div>
+
+                    <div class="smart-truck-meta">
+                        ${escapeHtml(type)}
+                        · Current: ${escapeHtml(current)}
+                        · Load: ${Number(truck && truck.load || 0).toFixed(1)}
+                        <br>
+                        Remaining stops: ${route}
+                    </div>
+
+                    <div class="smart-truck-progress">
+                        <span style="width:${progress}%;background:${color}"></span>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    async function refreshTruckTracking() {
+        if (!isMapOpen()) return;
+
+        const map = getMap();
+
+        if (!map || typeof window.apiRequest !== "function") {
+            return;
+        }
+
+        try {
+            const [binsResponse, trucksResponse] =
+                await Promise.all([
+                    window.apiRequest("/bins"),
+                    window.apiRequest("/trucks/")
+                ]);
+
+            const bins = getBins(binsResponse);
+            const trucks = getTrucks(trucksResponse);
+            const controller = getController();
+
+            updateDepot(map);
+
+            trucks.forEach((truck, index) => {
+                const position = getTruckPosition(
+                    truck,
+                    bins,
+                    index,
+                    controller
+                );
+
+                createOrUpdateMarker(
+                    truck,
+                    position,
+                    index,
+                    map
+                );
+            });
+
+            updateRoutes(
+                trucks,
+                bins,
+                controller,
+                map
+            );
+
+            updateHud(trucks);
+
+            const activeIds = new Set(
+                trucks.map((truck, index) =>
+                    String(truck && truck.id || `truck-${index}`)
+                )
+            );
+
+            Object.keys(truckMarkers).forEach(id => {
+                if (!activeIds.has(id)) {
+                    if (map.hasLayer(truckMarkers[id])) {
+                        map.removeLayer(truckMarkers[id]);
+                    }
+                    delete truckMarkers[id];
+                    delete truckState[id];
+                }
+            });
+
+        } catch (error) {
+            console.warn(
+                "Live truck tracking update failed:",
+                error
+            );
+        }
+    }
+
+    function startTruckTracking() {
+        stopTruckTracking();
+
+        refreshTruckTracking();
+
+        truckTimer = setInterval(
+            refreshTruckTracking,
+            REFRESH_MS
+        );
+    }
+
+    function stopTruckTracking() {
+        if (truckTimer) {
+            clearInterval(truckTimer);
+            truckTimer = null;
+        }
+    }
+
+    function clearTruckLayers() {
+        const map = getMap();
+
+        if (!map) return;
+
+        Object.keys(truckMarkers).forEach(id => {
+            if (map.hasLayer(truckMarkers[id])) {
+                map.removeLayer(truckMarkers[id]);
+            }
+        });
+
+        Object.keys(truckRoutes).forEach(id => {
+            if (map.hasLayer(truckRoutes[id])) {
+                map.removeLayer(truckRoutes[id]);
+            }
+        });
+
+        if (
+            map.__smartTruckDepotMarker &&
+            map.hasLayer(map.__smartTruckDepotMarker)
+        ) {
+            map.removeLayer(map.__smartTruckDepotMarker);
+        }
+
+        truckMarkers = {};
+        truckRoutes = {};
+        truckState = {};
+    }
+
+    function bindToLiveMap() {
+        const items =
+            document.querySelectorAll(".sidebar-item");
+
+        items.forEach(item => {
+            const text =
+                String(item.textContent || "").toLowerCase();
+
+            if (
+                text.includes("live map") &&
+                item.dataset.smartTruckBound !== "1"
+            ) {
+                item.dataset.smartTruckBound = "1";
+
+                item.addEventListener("click", () => {
+                    setTimeout(
+                        startTruckTracking,
+                        900
+                    );
+                });
+            }
+        });
+    }
+
+    // If the map is already open when this extension loads.
+    setTimeout(() => {
+        if (isMapOpen()) {
+            startTruckTracking();
+        }
+    }, 1200);
+
+    bindToLiveMap();
+
+    setTimeout(
+        bindToLiveMap,
+        1200
+    );
+
+    document.addEventListener(
+        "keydown",
+        event => {
+            if (event.key === "Escape") {
+                setTimeout(
+                    stopTruckTracking,
+                    150
+                );
+            }
+        }
+    );
+
+    // Detect the existing map closing without changing its close function.
+    setInterval(() => {
+        if (!isMapOpen()) {
+            stopTruckTracking();
+        }
+    }, 1000);
+
+    window.smartWasteTruckTracking = {
+        refresh: refreshTruckTracking,
+        start: startTruckTracking,
+        stop: stopTruckTracking,
+        clear: clearTruckLayers
+    };
+})();
+</script>
+
 
 </body>
 
